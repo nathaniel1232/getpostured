@@ -1,5 +1,82 @@
 {
   "current": {
-    "sections": {}
+    "sections": {
+      "header": {
+        "type": "header",
+        "settings": {},
+        "blocks": {
+          "nav_1": {
+            "type": "nav_link",
+            "settings": {
+              "text": "Shop",
+              "url": "#product-section"
+            }
+          },
+          "nav_2": {
+            "type": "nav_link",
+            "settings": {
+              "text": "Science",
+              "url": "#science-section"
+            }
+          },
+          "nav_3": {
+            "type": "nav_link",
+            "settings": {
+              "text": "Course",
+              "url": "#course-section"
+            }
+          },
+          "nav_4": {
+            "type": "nav_link",
+            "settings": {
+              "text": "FAQ",
+              "url": "#faq-section"
+            }
+          }
+        },
+        "block_order": ["nav_1", "nav_2", "nav_3", "nav_4"]
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {
+          "brand_text": "POSTURED",
+          "tagline": "Fix your posture. Sharpen your frame.",
+          "copyright": "© 2026 Postured — All rights reserved"
+        },
+        "blocks": {
+          "links_1": {
+            "type": "link_group",
+            "settings": {
+              "heading": "Shop",
+              "link_1_text": "Shop",
+              "link_1_url": "#product-section",
+              "link_2_text": "Shipping & Returns",
+              "link_2_url": "/policies/shipping-policy"
+            }
+          },
+          "links_2": {
+            "type": "link_group",
+            "settings": {
+              "heading": "Company",
+              "link_1_text": "About",
+              "link_1_url": "/pages/about",
+              "link_2_text": "Contact",
+              "link_2_url": "/pages/contact"
+            }
+          },
+          "links_3": {
+            "type": "link_group",
+            "settings": {
+              "heading": "Legal",
+              "link_1_text": "Privacy Policy",
+              "link_1_url": "/policies/privacy-policy",
+              "link_2_text": "Terms of Service",
+              "link_2_url": "/policies/terms-of-service"
+            }
+          }
+        },
+        "block_order": ["links_1", "links_2", "links_3"]
+      }
+    }
   }
 }
