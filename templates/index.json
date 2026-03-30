@@ -106,7 +106,14 @@
         "short_description": "Retrains your posture. Sharpens your jawline appearance. Builds a stronger frame. Posture Mastery Course included with purchase.",
         "review_count": "120+ reviews",
         "size_note": "Runs small — we recommend sizing up. This product is unisex.",
-        "show_compare_price": true
+        "show_compare_price": true,
+        "show_bundles": true,
+        "bundle_1_label": "Standard",
+        "bundle_2_label": "Most Popular",
+        "bundle_2_discount": 10,
+        "bundle_3_label": "Best Value",
+        "bundle_3_discount": 20,
+        "bundle_note": "Multi-pack discounts applied automatically at checkout."
       }
     },
     "results": {
@@ -232,6 +239,7 @@
       "settings": {
         "heading": "Included With Every Order",
         "subheading": "The Posture Mastery Course — a 5-chapter digital guide to fixing your posture for good.",
+        "course_image": "shopify://shop_images/course-cover.png",
         "delivery_text": "Delivered as a digital PDF download with your order. No extra cost.",
         "button_text": "Get the Strap + Course →",
         "button_link": "#product-section"
