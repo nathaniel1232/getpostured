@@ -1,11 +1,9 @@
-<section class="final-cta section-padding" id="final-cta">
-  <div class="container" style="text-align:center;">
-    <h2 class="final-cta__heading animate-in">{{ section.settings.heading }}</h2>
-    <p class="final-cta__subheading animate-in">{{ section.settings.subheading }}</p>
-    <a href="{{ section.settings.button_link }}" class="btn-primary btn-primary--pill btn-primary--large animate-in">{{ section.settings.button_text }}</a>
-    <div class="final-cta__trust animate-in">
-      {% render 'trust-badges' %}
-    </div>
+<section class="final-cta reveal" id="final-cta">
+  <div class="container">
+    <h2 class="section-heading">{{ section.settings.heading }}</h2>
+    <p class="section-subheading">{{ section.settings.subheading }}</p>
+    <a href="{{ section.settings.button_link }}" class="btn-primary btn-primary--large">{{ section.settings.button_text }}</a>
+    {% render 'trust-badges' %}
   </div>
 </section>
 
@@ -23,16 +21,16 @@
       "type": "textarea",
       "id": "subheading",
       "label": "Subheading",
-      "default": "FrameFix Strap + Posture Course. Stand taller, look sharper, carry yourself with confidence."
+      "default": "FrameFix Strap™ + Posture Course. Everything you need to stand taller, look sharper, and carry yourself with confidence."
     },
     {
       "type": "text",
       "id": "button_text",
       "label": "Button text",
-      "default": "Get Yours Now →"
+      "default": "Get Yours Now"
     },
     {
-      "type": "url",
+      "type": "text",
       "id": "button_link",
       "label": "Button link",
       "default": "#product-section"

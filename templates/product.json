@@ -1,41 +1,106 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "product-main": {
       "type": "product-main",
-      "settings": {
-        "short_description": "Retrains your posture. Sharpens your jawline appearance. Builds a stronger frame. Includes the full Posture Mastery Course free.",
-        "review_count": "120+ reviews",
-        "size_note": "Runs small \u2014 we recommend sizing up. This product is unisex.",
-        "show_compare_price": true
-      },
       "blocks": {
-        "f1": { "type": "feature", "settings": { "text": "Adjustable design \u2014 fits all body types" } },
-        "f2": { "type": "feature", "settings": { "text": "Breathable, lightweight material for all-day comfort" } },
-        "f3": { "type": "feature", "settings": { "text": "Discreet \u2014 wear under or over clothing" } },
-        "f4": { "type": "feature", "settings": { "text": "Free Posture Mastery Course included (digital)" } },
-        "f5": { "type": "feature", "settings": { "text": "30-day money-back guarantee" } }
+        "f1": {
+          "type": "feature",
+          "settings": {
+            "text": "Adjustable design — fits all body types"
+          }
+        },
+        "f2": {
+          "type": "feature",
+          "settings": {
+            "text": "Breathable, lightweight material for all-day comfort"
+          }
+        },
+        "f3": {
+          "type": "feature",
+          "settings": {
+            "text": "Discreet — wear under or over clothing"
+          }
+        },
+        "f4": {
+          "type": "feature",
+          "settings": {
+            "text": "Free Posture Mastery Course included (digital)"
+          }
+        },
+        "f5": {
+          "type": "feature",
+          "settings": {
+            "text": "30-day money-back guarantee"
+          }
+        }
       },
-      "block_order": ["f1", "f2", "f3", "f4", "f5"]
+      "block_order": [
+        "f1",
+        "f2",
+        "f3",
+        "f4",
+        "f5"
+      ],
+      "settings": {
+        "show_compare_price": true
+      }
     },
     "faq": {
       "type": "faq",
-      "settings": { "heading": "Questions? We\u2019ve Got Answers." },
       "blocks": {
-        "q1": { "type": "faq", "settings": { "question": "How long should I wear it each day?", "answer": "Start with 15-30 minutes in your first week. Gradually increase to 1-2 hours. The included Posture Course has a detailed 4-week plan." } },
-        "q2": { "type": "faq", "settings": { "question": "Will this improve my jawline?", "answer": "Posture affects how your jawline appears by changing head and neck positioning. It won't change bone structure, but proper alignment can significantly sharpen how your features look." } },
-        "q3": { "type": "faq", "settings": { "question": "What size should I order?", "answer": "S: chest 70-86 cm / M: 86-96 cm / L: 96-107 cm / XL: 107-122 cm. The strap runs small and is unisex \u2014 we recommend sizing up if you're between sizes." } }
+        "q1": {
+          "type": "faq",
+          "settings": {
+            "question": "How long should I wear it each day?",
+            "answer": "Start with 15-30 minutes in your first week. Gradually increase to 1-2 hours. The included Posture Course has a detailed 4-week plan."
+          }
+        },
+        "q2": {
+          "type": "faq",
+          "settings": {
+            "question": "Will this improve my jawline?",
+            "answer": "Posture affects how your jawline appears by changing head and neck positioning. It won't change bone structure, but proper alignment can significantly sharpen how your features look."
+          }
+        },
+        "q3": {
+          "type": "faq",
+          "settings": {
+            "question": "What size should I order?",
+            "answer": "S: chest 70-86 cm / M: 86-96 cm / L: 96-107 cm / XL: 107-122 cm. The strap runs small and is unisex — we recommend sizing up if you're between sizes."
+          }
+        }
       },
-      "block_order": ["q1", "q2", "q3"]
+      "block_order": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "settings": {
+        "heading": "Questions? We’ve Got Answers."
+      }
     },
     "final-cta": {
       "type": "final-cta",
       "settings": {
         "heading": "Your Frame Starts Here",
-        "subheading": "FrameFix Strap\u2122 + Posture Course. Stand taller, look sharper, carry yourself with confidence.",
-        "button_text": "Get Yours Now \u2192",
+        "subheading": "FrameFix Strap™ + Posture Course. Stand taller, look sharper, carry yourself with confidence.",
+        "button_text": "Get Yours Now →",
         "button_link": "#product-section"
       }
     }
   },
-  "order": ["product-main", "faq", "final-cta"]
+  "order": [
+    "product-main",
+    "faq",
+    "final-cta"
+  ]
 }
