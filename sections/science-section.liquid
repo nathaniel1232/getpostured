@@ -1,99 +1,18 @@
-<div id="science-section" class="science-section">
+<section class="science-section section-padding" id="science-section">
   <div class="container">
-    <h2 class="section-title">{{ section.settings.heading }}</h2>
-    <p class="section-subtitle">{{ section.settings.subheading }}</p>
-
-    <div class="science-grid">
+    <h2 class="section-heading animate-in">{{ section.settings.heading }}</h2>
+    <p class="section-subheading animate-in">{{ section.settings.subheading }}</p>
+    <div class="science-grid stagger-children">
       {% for block in section.blocks %}
-        <div class="science-card reveal" {{ block.shopify_attributes }}>
-          <div class="science-card__icon">{{ block.settings.icon }}</div>
+        <div class="science-card animate-in" {{ block.shopify_attributes }}>
           <h3 class="science-card__title">{{ block.settings.title }}</h3>
           <p class="science-card__text">{{ block.settings.description }}</p>
-          <small class="science-card__source"><em>{{ block.settings.source }}</em></small>
+          <p class="science-card__source">{{ block.settings.source }}</p>
         </div>
       {% endfor %}
     </div>
   </div>
-</div>
-
-<style>
-  .science-section {
-    padding: 80px 20px;
-    background-color: #0d0d0d;
-    color: #f0f0f0;
-  }
-
-  .science-section .container {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  .science-section .section-title {
-    text-align: center;
-    font-size: 2.4rem;
-    margin-bottom: 0.4em;
-    color: #ffffff;
-  }
-
-  .science-section .section-subtitle {
-    text-align: center;
-    color: #999;
-    font-size: 1.1rem;
-    margin-bottom: 3rem;
-  }
-
-  .science-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-  }
-
-  .science-card {
-    background: #141414;
-    border: 1px solid #222;
-    border-radius: 12px;
-    padding: 2rem;
-  }
-
-  .science-card__icon {
-    font-size: 2.2rem;
-    margin-bottom: 0.8rem;
-  }
-
-  .science-card__title {
-    font-size: 1.15rem;
-    color: #fff;
-    margin: 0 0 0.6rem;
-  }
-
-  .science-card__text {
-    color: #aaa;
-    font-size: 0.95rem;
-    line-height: 1.6;
-    margin: 0 0 1rem;
-  }
-
-  .science-card__source {
-    color: #666;
-    font-size: 0.8rem;
-  }
-
-  @media (max-width: 1024px) {
-    .science-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (max-width: 768px) {
-    .science-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .science-section .section-title {
-      font-size: 1.8rem;
-    }
-  }
-</style>
+</section>
 
 {% schema %}
 {
@@ -104,13 +23,13 @@
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "The Science Behind Posture"
+      "default": "Why It Works"
     },
     {
-      "type": "text",
+      "type": "textarea",
       "id": "subheading",
       "label": "Subheading",
-      "default": "Backed by peer-reviewed research, not bro-science."
+      "default": "Grounded in real research. Here's what science says about posture."
     }
   ],
   "blocks": [
@@ -120,21 +39,15 @@
       "settings": [
         {
           "type": "text",
-          "id": "icon",
-          "label": "Icon / Emoji",
-          "default": "🔬"
-        },
-        {
-          "type": "text",
           "id": "title",
           "label": "Title",
-          "default": "Research Title"
+          "default": "Science Fact"
         },
         {
           "type": "textarea",
           "id": "description",
           "label": "Description",
-          "default": "Description of the research finding."
+          "default": "Description of the scientific finding."
         },
         {
           "type": "text",
@@ -152,55 +65,25 @@
         {
           "type": "science_card",
           "settings": {
-            "icon": "🧠",
             "title": "Jawline & Appearance",
-            "description": "Forward head posture compresses soft tissue under the chin, making the jawline appear less defined. Correcting alignment can visibly sharpen your profile.",
+            "description": "Forward head posture compresses tissue under the chin, making the jawline appear less defined. Proper alignment visibly sharpens your profile.",
             "source": "National Library of Medicine"
           }
         },
         {
           "type": "science_card",
           "settings": {
-            "icon": "📏",
-            "title": "Height & Presence",
-            "description": "Slouching compresses the spine and reduces visible height. Proper alignment can make you appear noticeably taller.",
-            "source": "National Institutes of Health"
-          }
-        },
-        {
-          "type": "science_card",
-          "settings": {
-            "icon": "💪",
             "title": "Confidence & Perception",
-            "description": "Upright posture is linked to higher confidence, better mood, and stronger first impressions.",
-            "source": "Carney, Cuddy & Yap (2010)"
+            "description": "Upright posture is linked to higher confidence, stronger first impressions, and better mood.",
+            "source": "Carney, Cuddy & Yap (2010); Health Psychology"
           }
         },
         {
           "type": "science_card",
           "settings": {
-            "icon": "🫁",
-            "title": "Breathing & Energy",
-            "description": "Poor posture reduces lung capacity and oxygen intake, causing fatigue.",
-            "source": "Journal of Physical Therapy Science"
-          }
-        },
-        {
-          "type": "science_card",
-          "settings": {
-            "icon": "🛡️",
-            "title": "Pain Prevention",
-            "description": "Posture imbalances lead to neck pain, back pain, and chronic fatigue.",
-            "source": "Mayo Clinic"
-          }
-        },
-        {
-          "type": "science_card",
-          "settings": {
-            "icon": "🧘",
-            "title": "Mood & Stress",
-            "description": "Upright posture is associated with lower stress and more energy.",
-            "source": "Health Psychology journal"
+            "title": "Energy & Performance",
+            "description": "Poor posture reduces lung capacity and increases fatigue. Correcting it improves breathing and energy.",
+            "source": "Mayo Clinic; Journal of Physical Therapy Science"
           }
         }
       ]

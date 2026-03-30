@@ -1,67 +1,76 @@
-<section class="course-section reveal" id="course-section">
+<section class="course-section section-padding" id="course-section">
   <div class="container">
-    <h2 class="section-heading">{{ section.settings.heading }}</h2>
-    <p class="section-subheading">{{ section.settings.subheading }}</p>
-
+    <h2 class="section-heading animate-in">{{ section.settings.heading }}</h2>
+    <p class="section-subheading animate-in">{{ section.settings.subheading }}</p>
     <div class="course-layout">
-      <div class="course-preview">
-        <div class="course-preview__icon">📖</div>
-        <h3 class="course-preview__title">Posture Mastery Course</h3>
-        <p class="course-preview__subtitle">Complete Digital Guide</p>
+      <div class="course-preview animate-in">
+        {% if section.settings.course_image %}
+          <img src="{{ section.settings.course_image | image_url: width: 600 }}" alt="Posture Mastery Course" loading="lazy">
+        {% else %}
+          <div class="course-preview__placeholder">
+            <p style="font-family:var(--font-heading);font-size:24px;color:var(--text-primary);margin-bottom:8px;">Posture Mastery</p>
+            <p style="font-size:13px;color:var(--text-dim);">Course Cover</p>
+          </div>
+        {% endif %}
       </div>
-
-      <div class="course-chapters">
-        <ol class="chapter-list">
-          {%- for block in section.blocks -%}
-            <li class="chapter-item" {{ block.shopify_attributes }}>
-              <span class="chapter-number">{{ forloop.index }}</span>
-              <div class="chapter-info">
-                <strong class="chapter-title">{{ block.settings.title }}</strong>
-                <span class="chapter-subtitle">{{ block.settings.subtitle }}</span>
+      <div class="course-info animate-in">
+        <div class="course-chapters">
+          {% for block in section.blocks %}
+            <div class="course-chapter" {{ block.shopify_attributes }}>
+              <div>
+                <div class="course-chapter__title">{{ block.settings.title }}</div>
+                {% if block.settings.subtitle != blank %}
+                  <div class="course-chapter__subtitle">{{ block.settings.subtitle }}</div>
+                {% endif %}
               </div>
-            </li>
-          {%- endfor -%}
-        </ol>
+            </div>
+          {% endfor %}
+        </div>
+        <p class="course-delivery">{{ section.settings.delivery_text }}</p>
+        <a href="{{ section.settings.button_link }}" class="btn-primary course-cta">{{ section.settings.button_text }}</a>
       </div>
     </div>
-
-    <p class="course-emphasis">{{ section.settings.emphasis_text }}</p>
-    <a href="{{ section.settings.button_link }}" class="btn-primary">{{ section.settings.button_text }}</a>
   </div>
 </section>
 
 {% schema %}
 {
   "name": "Course Section",
+  "tag": "section",
   "settings": [
     {
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "Included Free: The Posture Mastery Course"
+      "default": "Included Free With Every Order"
     },
     {
       "type": "textarea",
       "id": "subheading",
       "label": "Subheading",
-      "default": "A complete 5-chapter course on how to fix your posture — delivered as a digital download with every purchase."
+      "default": "The Posture Mastery Course — a 5-chapter digital guide to fixing your posture for good."
     },
     {
-      "type": "text",
-      "id": "emphasis_text",
-      "label": "Emphasis text",
-      "default": "This isn't just a strap — it's a complete posture system."
+      "type": "image_picker",
+      "id": "course_image",
+      "label": "Course Image"
+    },
+    {
+      "type": "textarea",
+      "id": "delivery_text",
+      "label": "Delivery Text",
+      "default": "Delivered as a digital PDF download with your order. No extra cost."
     },
     {
       "type": "text",
       "id": "button_text",
-      "label": "Button text",
-      "default": "Get the Strap + Course"
+      "label": "Button Text",
+      "default": "Get the Strap + Course →"
     },
     {
       "type": "text",
       "id": "button_link",
-      "label": "Button link",
+      "label": "Button Link",
       "default": "#product-section"
     }
   ],
@@ -73,12 +82,14 @@
         {
           "type": "text",
           "id": "title",
-          "label": "Chapter title"
+          "label": "Chapter Title",
+          "default": "Chapter Title"
         },
         {
           "type": "text",
           "id": "subtitle",
-          "label": "Chapter subtitle"
+          "label": "Subtitle",
+          "default": "Chapter description"
         }
       ]
     }

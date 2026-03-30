@@ -1,38 +1,54 @@
 <section class="hero" id="hero-section">
-  <div class="hero__content reveal">
-    <h1 class="hero__title">{{ section.settings.heading }}</h1>
-    <p class="hero__subtitle">{{ section.settings.subheading }}</p>
-    <a href="{{ section.settings.button_link }}" class="btn-primary">{{ section.settings.button_text }}</a>
-    {% render 'trust-badges' %}
+  <div class="hero__content">
+    <div class="hero__badge animate-in">{{ section.settings.badge_text }}</div>
+    <h1 class="hero__title animate-in">{{ section.settings.heading_line1 }} <em>{{ section.settings.heading_line2 }}</em></h1>
+    <p class="hero__subtitle animate-in">{{ section.settings.subheading }}</p>
+    <a href="{{ section.settings.button_link }}" class="btn-primary btn-primary--pill btn-primary--large animate-in">{{ section.settings.button_text }}</a>
+    <div class="hero__trust animate-in">
+      {% render 'trust-badges' %}
+    </div>
   </div>
 </section>
 
 {% schema %}
 {
   "name": "Hero",
+  "class": "hero-section",
   "settings": [
     {
       "type": "text",
-      "id": "heading",
-      "label": "Heading",
-      "default": "Fix Your Posture. Sharpen Your Frame."
+      "id": "badge_text",
+      "label": "Badge Text",
+      "default": "BACKED BY SCIENCE \u00b7 FREE COURSE INCLUDED"
+    },
+    {
+      "type": "text",
+      "id": "heading_line1",
+      "label": "Heading Line 1",
+      "default": "Fix Your Posture."
+    },
+    {
+      "type": "text",
+      "id": "heading_line2",
+      "label": "Heading Line 2",
+      "default": "Sharpen Your Frame."
     },
     {
       "type": "text",
       "id": "subheading",
       "label": "Subheading",
-      "default": "The FrameFix Strap™ trains your body into proper alignment — improving your jawline appearance, height, confidence, and overall frame."
+      "default": "The FrameFix Strap\u2122 retrains your body into proper alignment \u2014 improving how your jawline looks, how tall you appear, and how confidently you carry yourself."
     },
     {
       "type": "text",
       "id": "button_text",
-      "label": "Button text",
-      "default": "Shop Now"
+      "label": "Button Text",
+      "default": "Shop Now \u2192"
     },
     {
       "type": "text",
       "id": "button_link",
-      "label": "Button link",
+      "label": "Button Link",
       "default": "#product-section"
     }
   ],

@@ -1,225 +1,45 @@
-<style>
-  .before-after {
-    padding: 80px 20px;
-    background: #0B0B0B;
-    text-align: center;
-  }
+<section class="ba-section section-padding" id="slider-section">
+  <div class="container">
+    <h2 class="section-heading animate-in">{{ section.settings.heading }}</h2>
+    <div class="ba-slider animate-in" data-section-id="{{ section.id }}">
+      <div class="ba-container">
+        {% if section.settings.before_image %}
+          <img class="ba-before" src="{{ section.settings.before_image | image_url: width: 1200 }}" alt="{{ section.settings.before_label }}" loading="lazy">
+        {% else %}
+          <div class="ba-before ba-placeholder">Before image placeholder</div>
+        {% endif %}
 
-  .before-after .section-title {
-    color: #FFFFFF;
-    font-family: var(--font-heading, 'Arial Black', sans-serif);
-    font-size: 2.2rem;
-    font-weight: 800;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 48px;
-  }
+        <div class="ba-after-wrapper">
+          {% if section.settings.after_image %}
+            <img class="ba-after" src="{{ section.settings.after_image | image_url: width: 1200 }}" alt="{{ section.settings.after_label }}" loading="lazy">
+          {% else %}
+            <div class="ba-after ba-placeholder">After image placeholder</div>
+          {% endif %}
+        </div>
 
-  .before-after-slider {
-    position: relative;
-    max-width: 900px;
-    margin: 0 auto;
-    overflow: hidden;
-    border-radius: 8px;
-    cursor: ew-resize;
-    user-select: none;
-    -webkit-user-select: none;
-    line-height: 0;
-  }
+        <div class="ba-handle">
+          <div class="ba-handle-line"></div>
+          <div class="ba-handle-circle">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7 4L3 10L7 16" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M13 4L17 10L13 16" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
 
-  .before-after__before img,
-  .before-after__after img {
-    display: block;
-    width: 100%;
-    height: auto;
-  }
-
-  .before-after__before {
-    display: block;
-    width: 100%;
-  }
-
-  .before-after__after {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    clip-path: inset(0 0 0 50%);
-  }
-
-  .before-after__after img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .before-after__handle {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 3px;
-    height: 100%;
-    background: #C8A24E;
-    transform: translateX(-50%);
-    z-index: 10;
-    pointer-events: none;
-  }
-
-  .before-after__handle::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 44px;
-    height: 44px;
-    background: #C8A24E;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
-    pointer-events: auto;
-  }
-
-  .before-after__handle-arrows {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 11;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 12px;
-    color: #0B0B0B;
-    font-weight: 700;
-    pointer-events: none;
-  }
-
-  .before-after__label {
-    position: absolute;
-    bottom: 16px;
-    padding: 6px 16px;
-    background: rgba(0, 0, 0, 0.6);
-    color: #FFFFFF;
-    font-family: var(--font-heading, 'Arial Black', sans-serif);
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    border-radius: 4px;
-    z-index: 5;
-    pointer-events: none;
-    line-height: 1.4;
-  }
-
-  .before-after__label--before {
-    left: 16px;
-  }
-
-  .before-after__label--after {
-    right: 16px;
-  }
-
-  .before-after__placeholder {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    aspect-ratio: 16 / 10;
-    background: #1a1a1a;
-    color: rgba(255, 255, 255, 0.45);
-    font-family: var(--font-heading, 'Arial Black', sans-serif);
-    font-size: 0.9rem;
-    letter-spacing: 0.05em;
-    line-height: 1.4;
-  }
-
-  @media (max-width: 768px) {
-    .before-after {
-      padding: 56px 16px;
-    }
-
-    .before-after .section-title {
-      font-size: 1.5rem;
-      margin-bottom: 32px;
-    }
-
-    .before-after__label {
-      font-size: 0.65rem;
-      padding: 4px 10px;
-      bottom: 10px;
-    }
-
-    .before-after__label--before {
-      left: 10px;
-    }
-
-    .before-after__label--after {
-      right: 10px;
-    }
-
-    .before-after__handle::before {
-      width: 36px;
-      height: 36px;
-    }
-
-    .before-after__handle-arrows {
-      font-size: 10px;
-    }
-  }
-</style>
-
-<section class="before-after reveal" id="before-after">
-  <h2 class="section-title">{{ section.settings.heading }}</h2>
-
-  <div class="before-after-slider">
-    <div class="before-after__before">
-      {%- if section.settings.before_image != blank -%}
-        <img
-          src="{{ section.settings.before_image | image_url: width: 1200 }}"
-          alt="{{ section.settings.before_label }}"
-          loading="lazy"
-          width="1200"
-          draggable="false"
-        >
-      {%- else -%}
-        <div class="before-after__placeholder">Upload Before Image</div>
-      {%- endif -%}
+        <span class="ba-label ba-label--before">{{ section.settings.before_label }}</span>
+        <span class="ba-label ba-label--after">{{ section.settings.after_label }}</span>
+      </div>
     </div>
-
-    <div class="before-after__after">
-      {%- if section.settings.after_image != blank -%}
-        <img
-          src="{{ section.settings.after_image | image_url: width: 1200 }}"
-          alt="{{ section.settings.after_label }}"
-          loading="lazy"
-          width="1200"
-          draggable="false"
-        >
-      {%- else -%}
-        <div class="before-after__placeholder">Upload After Image</div>
-      {%- endif -%}
-    </div>
-
-    <div class="before-after__handle">
-      <span class="before-after__handle-arrows">&#9664; &#9654;</span>
-    </div>
-
-    <span class="before-after__label before-after__label--before">{{ section.settings.before_label }}</span>
-    <span class="before-after__label before-after__label--after">{{ section.settings.after_label }}</span>
+    <p class="ba-hint animate-in">{{ section.settings.hint_text }}</p>
   </div>
 </section>
 
 {% schema %}
 {
   "name": "Before/After Slider",
+  "tag": "section",
+  "class": "ba-slider-section",
   "settings": [
     {
       "type": "text",
@@ -248,6 +68,12 @@
       "id": "after_label",
       "label": "After Label",
       "default": "After"
+    },
+    {
+      "type": "text",
+      "id": "hint_text",
+      "label": "Hint Text",
+      "default": "Drag the slider to compare"
     }
   ],
   "presets": [
@@ -256,7 +82,8 @@
       "settings": {
         "heading": "See the Difference",
         "before_label": "Before",
-        "after_label": "After"
+        "after_label": "After",
+        "hint_text": "Drag the slider to compare"
       }
     }
   ]

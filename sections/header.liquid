@@ -1,416 +1,62 @@
-<style>
-  .site-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    background: #0B0B0B;
-    transition: background 0.3s ease, box-shadow 0.3s ease;
-  }
+<header class="site-header" data-header>
+  <div class="header__inner">
+    <a href="/" class="header__logo">{{ section.settings.brand_name }}</a>
 
-  .site-header.scrolled {
-    background: rgba(11, 11, 11, 0.95);
-    box-shadow: 0 1px 20px rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-  }
-
-  .header-inner {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 40px;
-    height: 72px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  /* Brand */
-  .header-brand a {
-    font-family: var(--font-heading, 'Arial Black', sans-serif);
-    font-size: 1.4rem;
-    font-weight: 800;
-    letter-spacing: 0.15em;
-    color: #FFFFFF;
-    text-decoration: none;
-    text-transform: uppercase;
-  }
-
-  .header-brand img {
-    max-height: 40px;
-    width: auto;
-    display: block;
-  }
-
-  /* Desktop nav */
-  .header-nav {
-    display: flex;
-    align-items: center;
-    gap: 36px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  .header-nav a {
-    font-size: 0.85rem;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.7);
-    text-decoration: none;
-    transition: color 0.25s ease;
-    position: relative;
-  }
-
-  .header-nav a::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 0;
-    width: 0;
-    height: 1.5px;
-    background: #FFFFFF;
-    transition: width 0.25s ease;
-  }
-
-  .header-nav a:hover {
-    color: #FFFFFF;
-  }
-
-  .header-nav a:hover::after {
-    width: 100%;
-  }
-
-  /* Cart */
-  .header-cart {
-    position: relative;
-    display: flex;
-    align-items: center;
-  }
-
-  .header-cart a {
-    color: rgba(255, 255, 255, 0.85);
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    transition: color 0.25s ease;
-  }
-
-  .header-cart a:hover {
-    color: #FFFFFF;
-  }
-
-  .header-cart svg {
-    width: 22px;
-    height: 22px;
-    stroke: currentColor;
-    fill: none;
-    stroke-width: 1.5;
-  }
-
-  .cart-count {
-    position: absolute;
-    top: -6px;
-    right: -10px;
-    background: #FFFFFF;
-    color: #0B0B0B;
-    font-size: 0.6rem;
-    font-weight: 700;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 1;
-  }
-
-  .cart-count:empty {
-    display: none;
-  }
-
-  /* Hamburger */
-  .header-hamburger {
-    display: none;
-    flex-direction: column;
-    justify-content: center;
-    gap: 5px;
-    width: 28px;
-    height: 28px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    z-index: 1100;
-  }
-
-  .header-hamburger span {
-    display: block;
-    width: 100%;
-    height: 2px;
-    background: #FFFFFF;
-    border-radius: 1px;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-  }
-
-  /* Mobile nav drawer */
-  .mobile-nav-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.6);
-    z-index: 1050;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-  }
-
-  .mobile-nav-overlay.is-open {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  .mobile-nav-drawer {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 300px;
-    max-width: 85vw;
-    background: #0B0B0B;
-    z-index: 1060;
-    transform: translateX(100%);
-    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    display: flex;
-    flex-direction: column;
-    padding: 24px;
-  }
-
-  .mobile-nav-drawer.is-open {
-    transform: translateX(0);
-  }
-
-  .mobile-nav-close {
-    align-self: flex-end;
-    background: none;
-    border: none;
-    color: #FFFFFF;
-    font-size: 1.6rem;
-    cursor: pointer;
-    padding: 4px 8px;
-    line-height: 1;
-    margin-bottom: 32px;
-  }
-
-  .mobile-nav-links {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .mobile-nav-links a {
-    display: block;
-    padding: 12px 0;
-    font-size: 1.1rem;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.8);
-    text-decoration: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    transition: color 0.2s ease;
-  }
-
-  .mobile-nav-links a:hover {
-    color: #FFFFFF;
-  }
-
-  .mobile-nav-cart {
-    margin-top: auto;
-    padding-top: 24px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .mobile-nav-cart a {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: rgba(255, 255, 255, 0.8);
-    text-decoration: none;
-    font-size: 1rem;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-
-  .mobile-nav-cart svg {
-    width: 20px;
-    height: 20px;
-    stroke: currentColor;
-    fill: none;
-    stroke-width: 1.5;
-  }
-
-  @media (max-width: 768px) {
-    .header-inner {
-      padding: 0 20px;
-      height: 64px;
-    }
-
-    .header-nav {
-      display: none;
-    }
-
-    .header-hamburger {
-      display: flex;
-    }
-  }
-</style>
-
-<header class="site-header" data-section-id="{{ section.id }}">
-  <div class="header-inner">
-    <div class="header-brand">
-      <a href="/">
-        {%- if section.settings.logo != blank -%}
-          <img
-            src="{{ section.settings.logo | image_url: width: 200 }}"
-            alt="{{ shop.name }}"
-            width="200"
-            height="40"
-            loading="eager"
-          >
-        {%- else -%}
-          POSTURED
-        {%- endif -%}
-      </a>
-    </div>
-
-    <nav>
-      <ul class="header-nav">
-        {%- for block in section.blocks -%}
-          {%- if block.type == 'nav_link' -%}
-            <li {{ block.shopify_attributes }}>
-              <a href="{{ block.settings.url }}">{{ block.settings.text }}</a>
-            </li>
-          {%- endif -%}
-        {%- endfor -%}
-      </ul>
+    <nav class="header__nav desktop-only">
+      {% for block in section.blocks %}
+        <a href="{{ block.settings.url }}" {{ block.shopify_attributes }}>{{ block.settings.text }}</a>
+      {% endfor %}
     </nav>
 
-    <div class="header-cart">
-      <a href="/cart" aria-label="Cart">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/>
-        </svg>
-        {%- if cart.item_count > 0 -%}
-          <span class="cart-count">{{ cart.item_count }}</span>
-        {%- endif -%}
+    <div class="header__actions">
+      <a href="/cart" class="header__cart">
+        {% render 'svg-icons', icon: 'cart' %}
+        <span class="cart-count {% if cart.item_count > 0 %}has-items{% endif %}">{{ cart.item_count }}</span>
       </a>
+      <button class="header__toggle mobile-only" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
-
-    <button class="header-hamburger" aria-label="Open menu" aria-expanded="false" data-mobile-nav-toggle>
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
   </div>
 </header>
 
-<!-- Mobile nav drawer -->
-<div class="mobile-nav-overlay" data-mobile-nav-overlay></div>
-<div class="mobile-nav-drawer" data-mobile-nav-drawer>
-  <button class="mobile-nav-close" aria-label="Close menu" data-mobile-nav-toggle>&times;</button>
-  <ul class="mobile-nav-links">
-    {%- for block in section.blocks -%}
-      {%- if block.type == 'nav_link' -%}
-        <li>
-          <a href="{{ block.settings.url }}" data-mobile-nav-link>{{ block.settings.text }}</a>
-        </li>
-      {%- endif -%}
-    {%- endfor -%}
-  </ul>
-  <div class="mobile-nav-cart">
-    <a href="/cart">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/>
-      </svg>
-      Cart{% if cart.item_count > 0 %} ({{ cart.item_count }}){% endif %}
-    </a>
-  </div>
-</div>
-
-<script>
-  (function() {
-    const toggle = document.querySelectorAll('[data-mobile-nav-toggle]');
-    const overlay = document.querySelector('[data-mobile-nav-overlay]');
-    const drawer = document.querySelector('[data-mobile-nav-drawer]');
-    const links = document.querySelectorAll('[data-mobile-nav-link]');
-
-    function openDrawer() {
-      overlay.classList.add('is-open');
-      drawer.classList.add('is-open');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeDrawer() {
-      overlay.classList.remove('is-open');
-      drawer.classList.remove('is-open');
-      document.body.style.overflow = '';
-    }
-
-    toggle.forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        if (drawer.classList.contains('is-open')) {
-          closeDrawer();
-        } else {
-          openDrawer();
-        }
-      });
-    });
-
-    if (overlay) {
-      overlay.addEventListener('click', closeDrawer);
-    }
-
-    links.forEach(function(link) {
-      link.addEventListener('click', closeDrawer);
-    });
-  })();
-</script>
+<div class="mobile-nav-overlay" data-nav-overlay></div>
+<nav class="mobile-nav" data-mobile-nav>
+  <button class="mobile-nav__close" aria-label="Close menu">
+    {% render 'svg-icons', icon: 'close' %}
+  </button>
+  {% for block in section.blocks %}
+    <a href="{{ block.settings.url }}" class="mobile-nav__link">{{ block.settings.text }}</a>
+  {% endfor %}
+  <a href="/cart" class="mobile-nav__link">Cart ({{ cart.item_count }})</a>
+</nav>
 
 {% schema %}
 {
   "name": "Header",
-  "tag": "section",
-  "class": "header-section",
+  "class": "site-header-section",
   "settings": [
     {
-      "type": "image_picker",
-      "id": "logo",
-      "label": "Logo image",
-      "info": "Optional. Falls back to text logo if not set."
+      "type": "text",
+      "id": "brand_name",
+      "label": "Brand Name",
+      "default": "POSTURED"
     }
   ],
   "blocks": [
     {
       "type": "nav_link",
-      "name": "Navigation link",
+      "name": "Navigation Link",
       "settings": [
         {
           "type": "text",
           "id": "text",
-          "label": "Link text",
-          "default": "Link"
+          "label": "Link Text"
         },
         {
           "type": "text",
           "id": "url",
-          "label": "Link URL",
-          "default": "/"
+          "label": "Link URL"
         }
       ]
     }
@@ -422,22 +68,22 @@
         {
           "type": "nav_link",
           "settings": {
-            "text": "Shop",
-            "url": "#product-section"
+            "text": "Home",
+            "url": "/"
           }
         },
         {
           "type": "nav_link",
           "settings": {
-            "text": "Science",
+            "text": "Catalog",
+            "url": "/collections/all"
+          }
+        },
+        {
+          "type": "nav_link",
+          "settings": {
+            "text": "About",
             "url": "#science-section"
-          }
-        },
-        {
-          "type": "nav_link",
-          "settings": {
-            "text": "Course",
-            "url": "#course-section"
           }
         },
         {

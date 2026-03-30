@@ -1,22 +1,25 @@
-<section class="problem-section" id="problem-section">
-  <h2 class="section-title">{{ section.settings.heading }}</h2>
-
-  <div class="problem-grid">
-    {% for block in section.blocks %}
-      <div class="problem-card reveal" {{ block.shopify_attributes }}>
-        <span class="problem-card__icon">{{ block.settings.icon }}</span>
-        <h3 class="problem-card__title">{{ block.settings.title }}</h3>
-        <p class="problem-card__description">{{ block.settings.description }}</p>
-      </div>
-    {% endfor %}
+<section class="problem-section section-padding" id="problem-section">
+  <div class="container">
+    <h2 class="section-heading animate-in">{{ section.settings.heading }}</h2>
+    <div class="problem-grid stagger-children">
+      {% for block in section.blocks %}
+        <div class="problem-card animate-in" {{ block.shopify_attributes }}>
+          <div class="problem-card__icon">
+            {% render 'svg-icons', icon: block.settings.icon %}
+          </div>
+          <h3 class="problem-card__title">{{ block.settings.title }}</h3>
+          <p class="problem-card__text">{{ block.settings.description }}</p>
+        </div>
+      {% endfor %}
+    </div>
+    <p class="problem-section__bottom animate-in">{{ section.settings.bottom_text }}</p>
   </div>
-
-  <p class="problem-section__bottom-text">{{ section.settings.bottom_text }}</p>
 </section>
 
 {% schema %}
 {
   "name": "Problem Cards",
+  "class": "problem-cards-section",
   "settings": [
     {
       "type": "text",
@@ -27,8 +30,8 @@
     {
       "type": "text",
       "id": "bottom_text",
-      "label": "Bottom text",
-      "default": "The good news? This is fixable. And it starts with awareness."
+      "label": "Bottom Text",
+      "default": "The good news? This is completely fixable."
     }
   ],
   "blocks": [
@@ -39,20 +42,18 @@
         {
           "type": "text",
           "id": "icon",
-          "label": "Icon / Emoji",
-          "default": "🦴"
+          "label": "Icon Name",
+          "info": "Name passed to svg-icons snippet (e.g. crosshair, arrow-down, shield)"
         },
         {
           "type": "text",
           "id": "title",
-          "label": "Title",
-          "default": "Forward Head Posture"
+          "label": "Title"
         },
         {
           "type": "textarea",
           "id": "description",
-          "label": "Description",
-          "default": "Pushes your jaw forward, compressing your jawline and making it appear less defined."
+          "label": "Description"
         }
       ]
     }
@@ -64,25 +65,25 @@
         {
           "type": "problem_card",
           "settings": {
-            "icon": "🦴",
+            "icon": "crosshair",
             "title": "Forward Head Posture",
-            "description": "Pushes your jaw forward, compressing your jawline and making it appear less defined."
+            "description": "Pushes your head forward, compressing the tissue under your chin. Your jawline appears less defined \u2014 not because of fat or genetics, but positioning."
           }
         },
         {
           "type": "problem_card",
           "settings": {
-            "icon": "🧍",
+            "icon": "arrow-down",
             "title": "Slouched Shoulders",
-            "description": "Makes you look shorter, less confident, and closed off. Weakens your upper back over time."
+            "description": "Makes you look shorter, less confident, and closed off. Over time it weakens your upper back and locks your body into this position."
           }
         },
         {
           "type": "problem_card",
           "settings": {
-            "icon": "💪",
+            "icon": "shield",
             "title": "Weak Frame",
-            "description": "Poor posture signals low energy and low confidence — before you even say a word."
+            "description": "Poor posture signals low energy before you say a word. Your 'frame' \u2014 how you fill space \u2014 starts with how you stand."
           }
         }
       ]

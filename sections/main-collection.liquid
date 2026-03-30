@@ -1,0 +1,35 @@
+<section class="collection-section section-padding">
+  <div class="container">
+    <h1 class="section-heading animate-in">{{ collection.title }}</h1>
+    {% if collection.description != blank %}
+      <p class="section-subheading animate-in">{{ collection.description }}</p>
+    {% endif %}
+    <div class="collection-grid stagger-children">
+      {% for product in collection.products %}
+        <a href="{{ product.url }}" class="collection-card animate-in">
+          <div class="collection-card__image">
+            {% if product.featured_image %}
+              <img src="{{ product.featured_image | image_url: width: 600 }}" alt="{{ product.featured_image.alt | escape }}" loading="lazy">
+            {% else %}
+              <div style="aspect-ratio:1;background:var(--bg-card);display:flex;align-items:center;justify-content:center;color:var(--text-dim);">No image</div>
+            {% endif %}
+          </div>
+          <div class="collection-card__body">
+            <h3 class="collection-card__title">{{ product.title }}</h3>
+            <p class="collection-card__price">{{ product.price | money }}</p>
+          </div>
+        </a>
+      {% else %}
+        <p class="animate-in" style="color:var(--text-secondary);text-align:center;grid-column:1/-1;">No products in this collection yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection",
+  "settings": [],
+  "presets": [{ "name": "Collection" }]
+}
+{% endschema %}

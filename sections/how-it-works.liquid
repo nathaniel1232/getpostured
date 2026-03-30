@@ -1,15 +1,14 @@
-<section class="how-it-works reveal" id="how-it-works">
+<section class="how-it-works section-padding" id="how-it-works">
   <div class="container">
-    <h2 class="section-heading">{{ section.settings.heading }}</h2>
-
-    <div class="steps-grid">
-      {%- for block in section.blocks -%}
-        <div class="step-card" {{ block.shopify_attributes }}>
+    <h2 class="section-heading animate-in">{{ section.settings.heading }}</h2>
+    <div class="steps-grid stagger-children">
+      {% for block in section.blocks %}
+        <div class="step-card animate-in" {{ block.shopify_attributes }}>
           <div class="step-number">{{ forloop.index }}</div>
-          <h3 class="step-card__title">{{ block.settings.title }}</h3>
-          <p class="step-card__description">{{ block.settings.description }}</p>
+          <h3 class="step-title">{{ block.settings.title }}</h3>
+          <p class="step-text">{{ block.settings.description }}</p>
         </div>
-      {%- endfor -%}
+      {% endfor %}
     </div>
   </div>
 </section>
@@ -22,7 +21,7 @@
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "How It Works"
+      "default": "Three Steps to Better Posture"
     }
   ],
   "blocks": [
@@ -33,12 +32,12 @@
         {
           "type": "text",
           "id": "title",
-          "label": "Step title"
+          "label": "Title"
         },
         {
-          "type": "textarea",
+          "type": "richtext",
           "id": "description",
-          "label": "Step description"
+          "label": "Description"
         }
       ]
     }
@@ -50,22 +49,22 @@
         {
           "type": "step",
           "settings": {
-            "title": "Put It On",
-            "description": "Wear the FrameFix Strap like a backpack. Adjust for a snug, comfortable fit."
+            "title": "Put it on",
+            "description": "<p>Wear it like a backpack. Adjust the straps until it's snug but comfortable.</p>"
           }
         },
         {
           "type": "step",
           "settings": {
-            "title": "Build Awareness",
-            "description": "The strap gently pulls your shoulders back, teaching your body correct alignment."
+            "title": "Train your body",
+            "description": "<p>The strap gently holds your shoulders back. Your muscles learn correct alignment over time.</p>"
           }
         },
         {
           "type": "step",
           "settings": {
-            "title": "See Results",
-            "description": "Within weeks, your posture improves — your frame, jawline, and confidence follow."
+            "title": "See the change",
+            "description": "<p>Within weeks, your posture improves. Your frame, jawline appearance, and confidence follow.</p>"
           }
         }
       ]

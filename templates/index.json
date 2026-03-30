@@ -3,9 +3,11 @@
     "hero": {
       "type": "hero",
       "settings": {
-        "heading": "Fix Your Posture. Sharpen Your Frame.",
-        "subheading": "The FrameFix Strap™ trains your body into proper alignment — improving your jawline appearance, height, confidence, and overall frame.",
-        "button_text": "Shop Now",
+        "badge_text": "BACKED BY SCIENCE \u00b7 FREE COURSE INCLUDED",
+        "heading_line1": "Fix Your Posture.",
+        "heading_line2": "Sharpen Your Frame.",
+        "subheading": "The FrameFix Strap\u2122 retrains your body into proper alignment \u2014 improving how your jawline looks, how tall you appear, and how confidently you carry yourself.",
+        "button_text": "Shop Now \u2192",
         "button_link": "#product-section"
       }
     },
@@ -13,361 +15,123 @@
       "type": "problem-cards",
       "settings": {
         "heading": "Your Posture Is Holding You Back",
-        "bottom_text": "The good news? This is fixable. And it starts with awareness."
+        "bottom_text": "The good news? This is completely fixable."
       },
       "blocks": {
-        "block_1": {
-          "type": "problem_card",
-          "settings": {
-            "icon": "🦴",
-            "title": "Forward Head Posture",
-            "description": "Pushes your jaw forward, compressing your jawline and making it appear less defined."
-          }
-        },
-        "block_2": {
-          "type": "problem_card",
-          "settings": {
-            "icon": "🧍",
-            "title": "Slouched Shoulders",
-            "description": "Makes you look shorter, less confident, and closed off. Weakens your upper back over time."
-          }
-        },
-        "block_3": {
-          "type": "problem_card",
-          "settings": {
-            "icon": "💪",
-            "title": "Weak Frame",
-            "description": "Poor posture signals low energy and low confidence — before you even say a word."
-          }
-        }
+        "pc1": { "type": "problem_card", "settings": { "icon": "crosshair", "title": "Forward Head Posture", "description": "Pushes your head forward, compressing the tissue under your chin. Your jawline appears less defined \u2014 not because of fat or genetics, but positioning." } },
+        "pc2": { "type": "problem_card", "settings": { "icon": "arrow-down", "title": "Slouched Shoulders", "description": "Makes you look shorter, less confident, and closed off. Over time it weakens your upper back and locks your body into this position." } },
+        "pc3": { "type": "problem_card", "settings": { "icon": "shield", "title": "Weak Frame", "description": "Poor posture signals low energy before you say a word. Your \u2018frame\u2019 \u2014 how you fill space \u2014 starts with how you stand." } }
       },
-      "block_order": ["block_1", "block_2", "block_3"]
+      "block_order": ["pc1", "pc2", "pc3"]
     },
-    "before-after-slider": {
+    "before-after": {
       "type": "before-after-slider",
       "settings": {
         "heading": "See the Difference",
         "before_label": "Before",
-        "after_label": "After"
+        "after_label": "After",
+        "hint_text": "Drag the slider to compare"
       }
     },
     "product-main": {
       "type": "product-main",
       "settings": {
+        "short_description": "Retrains your posture. Sharpens your jawline appearance. Builds a stronger frame. Includes the full Posture Mastery Course free.",
+        "review_count": "120+ reviews",
+        "size_note": "Runs small \u2014 we recommend sizing up. This product is unisex.",
         "show_compare_price": true
       },
       "blocks": {
-        "block_1": {
-          "type": "feature",
-          "settings": {
-            "icon": "✓",
-            "text": "Adjustable fit — works for all body types"
-          }
-        },
-        "block_2": {
-          "type": "feature",
-          "settings": {
-            "icon": "✓",
-            "text": "Breathable, lightweight material"
-          }
-        },
-        "block_3": {
-          "type": "feature",
-          "settings": {
-            "icon": "✓",
-            "text": "Wear under or over clothing"
-          }
-        },
-        "block_4": {
-          "type": "feature",
-          "settings": {
-            "icon": "✓",
-            "text": "Free Posture Mastery Course included"
-          }
-        },
-        "block_5": {
-          "type": "feature",
-          "settings": {
-            "icon": "✓",
-            "text": "30-day money-back guarantee"
-          }
-        }
+        "f1": { "type": "feature", "settings": { "text": "Adjustable design \u2014 fits all body types" } },
+        "f2": { "type": "feature", "settings": { "text": "Breathable, lightweight material for all-day comfort" } },
+        "f3": { "type": "feature", "settings": { "text": "Discreet \u2014 wear under or over clothing" } },
+        "f4": { "type": "feature", "settings": { "text": "Free Posture Mastery Course included (digital)" } },
+        "f5": { "type": "feature", "settings": { "text": "30-day money-back guarantee" } }
       },
-      "block_order": ["block_1", "block_2", "block_3", "block_4", "block_5"]
+      "block_order": ["f1", "f2", "f3", "f4", "f5"]
     },
-    "results-gallery": {
+    "results": {
       "type": "results-gallery",
       "settings": {
-        "heading": "Real Results From Real People",
-        "subheading": "See how posture correction changed their appearance and confidence.",
-        "disclaimer_text": "Results vary. Posture affects appearance, not bone structure."
+        "heading": "Real People, Real Results",
+        "subheading": "See how the FrameFix Strap changed their posture and appearance.",
+        "disclaimer": "Results vary. Posture correction affects appearance through positioning, not bone structure."
       },
       "blocks": {
-        "block_1": {
-          "type": "result",
-          "settings": {
-            "name": "Marcus T.",
-            "quote": "My jawline looks completely different now. It was my posture the whole time."
-          }
-        },
-        "block_2": {
-          "type": "result",
-          "settings": {
-            "name": "Jake R.",
-            "quote": "People keep telling me I look taller. I'm the same height — just standing properly."
-          }
-        },
-        "block_3": {
-          "type": "result",
-          "settings": {
-            "name": "Dylan M.",
-            "quote": "The course opened my eyes. The strap built the habit. Total game changer."
-          }
-        },
-        "block_4": {
-          "type": "result",
-          "settings": {
-            "name": "Chris L.",
-            "quote": "I used to slouch in every photo. Now I stand like I mean it."
-          }
-        },
-        "block_5": {
-          "type": "result",
-          "settings": {
-            "name": "Aiden K.",
-            "quote": "Two weeks in and my back pain is basically gone. Wish I started sooner."
-          }
-        },
-        "block_6": {
-          "type": "result",
-          "settings": {
-            "name": "Noah P.",
-            "quote": "The confidence boost is real. Better posture changes how people see you."
-          }
-        }
+        "r1": { "type": "result", "settings": { "name": "Marcus T.", "quote": "My jawline looks completely different now. It was my posture the whole time." } },
+        "r2": { "type": "result", "settings": { "name": "Jake R.", "quote": "People keep telling me I look taller. I'm the same height \u2014 just standing properly." } },
+        "r3": { "type": "result", "settings": { "name": "Dylan M.", "quote": "The course opened my eyes. The strap built the habit. Total game changer." } }
       },
-      "block_order": ["block_1", "block_2", "block_3", "block_4", "block_5", "block_6"]
+      "block_order": ["r1", "r2", "r3"]
     },
-    "science-section": {
+    "science": {
       "type": "science-section",
       "settings": {
-        "heading": "The Science Behind Posture",
-        "subheading": "Backed by peer-reviewed research, not bro-science."
+        "heading": "Why It Works",
+        "subheading": "Grounded in real research. Here\u2019s what science says about posture."
       },
       "blocks": {
-        "block_1": {
-          "type": "science_card",
-          "settings": {
-            "icon": "🧠",
-            "title": "Jawline & Appearance",
-            "description": "Forward head posture compresses soft tissue under the chin, making the jawline appear less defined. Correcting alignment can visibly sharpen your profile.",
-            "source": "National Library of Medicine"
-          }
-        },
-        "block_2": {
-          "type": "science_card",
-          "settings": {
-            "icon": "📏",
-            "title": "Height & Presence",
-            "description": "Slouching compresses the spine and reduces visible height. Proper alignment can make you appear noticeably taller.",
-            "source": "National Institutes of Health"
-          }
-        },
-        "block_3": {
-          "type": "science_card",
-          "settings": {
-            "icon": "💪",
-            "title": "Confidence & Perception",
-            "description": "Upright posture is linked to higher confidence, better mood, and stronger first impressions.",
-            "source": "Carney, Cuddy & Yap (2010)"
-          }
-        },
-        "block_4": {
-          "type": "science_card",
-          "settings": {
-            "icon": "🫁",
-            "title": "Breathing & Energy",
-            "description": "Poor posture reduces lung capacity and oxygen intake, causing fatigue.",
-            "source": "Journal of Physical Therapy Science"
-          }
-        },
-        "block_5": {
-          "type": "science_card",
-          "settings": {
-            "icon": "🛡️",
-            "title": "Pain Prevention",
-            "description": "Posture imbalances lead to neck pain, back pain, and chronic fatigue.",
-            "source": "Mayo Clinic"
-          }
-        },
-        "block_6": {
-          "type": "science_card",
-          "settings": {
-            "icon": "🧘",
-            "title": "Mood & Stress",
-            "description": "Upright posture is associated with lower stress and more energy.",
-            "source": "Health Psychology journal"
-          }
-        }
+        "s1": { "type": "science_card", "settings": { "title": "Jawline & Appearance", "description": "Forward head posture compresses tissue under the chin, making the jawline appear less defined. Proper alignment visibly sharpens your profile.", "source": "National Library of Medicine" } },
+        "s2": { "type": "science_card", "settings": { "title": "Confidence & Perception", "description": "Upright posture is linked to higher confidence, stronger first impressions, and better mood.", "source": "Carney, Cuddy & Yap (2010); Health Psychology" } },
+        "s3": { "type": "science_card", "settings": { "title": "Energy & Performance", "description": "Poor posture reduces lung capacity and increases fatigue. Correcting it improves breathing and energy.", "source": "Mayo Clinic; Journal of Physical Therapy Science" } }
       },
-      "block_order": ["block_1", "block_2", "block_3", "block_4", "block_5", "block_6"]
+      "block_order": ["s1", "s2", "s3"]
     },
-    "course-section": {
+    "course": {
       "type": "course-section",
       "settings": {
-        "heading": "Included Free: The Posture Mastery Course",
-        "subheading": "A complete 5-chapter course on how to fix your posture — delivered as a digital download with every purchase.",
-        "emphasis_text": "This isn't just a strap — it's a complete posture system.",
-        "button_text": "Get the Strap + Course",
+        "heading": "Included Free With Every Order",
+        "subheading": "The Posture Mastery Course \u2014 a 5-chapter digital guide to fixing your posture for good.",
+        "delivery_text": "Delivered as a digital PDF download with your order. No extra cost.",
+        "button_text": "Get the Strap + Course \u2192",
         "button_link": "#product-section"
       },
       "blocks": {
-        "block_1": {
-          "type": "chapter",
-          "settings": {
-            "title": "Why Posture Matters",
-            "subtitle": "Jawline, height, confidence, perception"
-          }
-        },
-        "block_2": {
-          "type": "chapter",
-          "settings": {
-            "title": "What Goes Wrong",
-            "subtitle": "Forward head posture, Upper Crossed Syndrome"
-          }
-        },
-        "block_3": {
-          "type": "chapter",
-          "settings": {
-            "title": "The Hidden Effects",
-            "subtitle": "Breathing, energy, mood, pain"
-          }
-        },
-        "block_4": {
-          "type": "chapter",
-          "settings": {
-            "title": "How to Fix It",
-            "subtitle": "FrameFix Strap guide, exercises, 4-week plan"
-          }
-        },
-        "block_5": {
-          "type": "chapter",
-          "settings": {
-            "title": "Building the Habit",
-            "subtitle": "Frame, consistency, long-term results"
-          }
-        }
+        "ch1": { "type": "chapter", "settings": { "title": "Why Posture Matters", "subtitle": "Jawline, height, confidence, perception" } },
+        "ch2": { "type": "chapter", "settings": { "title": "What Goes Wrong", "subtitle": "Forward head posture, Upper Crossed Syndrome" } },
+        "ch3": { "type": "chapter", "settings": { "title": "The Hidden Effects", "subtitle": "Breathing, energy, mood, pain" } },
+        "ch4": { "type": "chapter", "settings": { "title": "How to Fix It", "subtitle": "FrameFix Strap guide, exercises, 4-week plan" } },
+        "ch5": { "type": "chapter", "settings": { "title": "Building the Habit", "subtitle": "Frame, consistency, long-term results" } }
       },
-      "block_order": ["block_1", "block_2", "block_3", "block_4", "block_5"]
+      "block_order": ["ch1", "ch2", "ch3", "ch4", "ch5"]
     },
     "how-it-works": {
       "type": "how-it-works",
       "settings": {
-        "heading": "How It Works"
+        "heading": "Three Steps to Better Posture"
       },
       "blocks": {
-        "block_1": {
-          "type": "step",
-          "settings": {
-            "title": "Put It On",
-            "description": "Wear the FrameFix Strap like a backpack. Adjust for a snug, comfortable fit."
-          }
-        },
-        "block_2": {
-          "type": "step",
-          "settings": {
-            "title": "Build Awareness",
-            "description": "The strap gently pulls your shoulders back, teaching your body correct alignment."
-          }
-        },
-        "block_3": {
-          "type": "step",
-          "settings": {
-            "title": "See Results",
-            "description": "Within weeks, your posture improves — your frame, jawline, and confidence follow."
-          }
-        }
+        "st1": { "type": "step", "settings": { "title": "Put it on", "description": "Wear it like a backpack. Adjust the straps until it's snug but comfortable." } },
+        "st2": { "type": "step", "settings": { "title": "Train your body", "description": "The strap gently holds your shoulders back. Your muscles learn correct alignment over time." } },
+        "st3": { "type": "step", "settings": { "title": "See the change", "description": "Within weeks, your posture improves. Your frame, jawline appearance, and confidence follow." } }
       },
-      "block_order": ["block_1", "block_2", "block_3"]
+      "block_order": ["st1", "st2", "st3"]
     },
     "faq": {
       "type": "faq",
       "settings": {
-        "heading": "Frequently Asked Questions"
+        "heading": "Questions? We\u2019ve Got Answers."
       },
       "blocks": {
-        "block_1": {
-          "type": "faq",
-          "settings": {
-            "question": "How long should I wear it per day?",
-            "answer": "Start with 15-30 minutes and gradually increase to 1-2 hours. The included course has a full 4-week plan."
-          }
-        },
-        "block_2": {
-          "type": "faq",
-          "settings": {
-            "question": "Will this actually improve my jawline?",
-            "answer": "Posture affects how your jawline appears by changing head and neck positioning. It won't change bone structure, but it can significantly sharpen how your features look."
-          }
-        },
-        "block_3": {
-          "type": "faq",
-          "settings": {
-            "question": "Can I wear it under clothing?",
-            "answer": "Yes. The FrameFix Strap is designed to be slim and discreet enough to wear under most shirts."
-          }
-        },
-        "block_4": {
-          "type": "faq",
-          "settings": {
-            "question": "How long until I see results?",
-            "answer": "Many people notice a difference in how they carry themselves within the first week. Visible, lasting improvement typically takes 2-4 weeks of consistent use."
-          }
-        },
-        "block_5": {
-          "type": "faq",
-          "settings": {
-            "question": "What size should I get?",
-            "answer": "S fits chest 28-34 inches, M fits 34-38, L fits 38-42, XL fits 42-48. When in between sizes, go up."
-          }
-        },
-        "block_6": {
-          "type": "faq",
-          "settings": {
-            "question": "Is there a guarantee?",
-            "answer": "Yes. 30-day money-back guarantee, no questions asked."
-          }
-        },
-        "block_7": {
-          "type": "faq",
-          "settings": {
-            "question": "What's included with my order?",
-            "answer": "The FrameFix Strap™ and the full Posture Mastery Course (digital PDF download sent via email after purchase)."
-          }
-        }
+        "q1": { "type": "faq", "settings": { "question": "How long should I wear it each day?", "answer": "Start with 15-30 minutes in your first week. Gradually increase to 1-2 hours. The included Posture Course has a detailed 4-week plan." } },
+        "q2": { "type": "faq", "settings": { "question": "Will this improve my jawline?", "answer": "Posture affects how your jawline appears by changing head and neck positioning. It won't change bone structure, but proper alignment can significantly sharpen how your features look." } },
+        "q3": { "type": "faq", "settings": { "question": "Can I wear it under my clothes?", "answer": "Yes. The FrameFix Strap is slim and lightweight enough to wear discreetly under most shirts." } },
+        "q4": { "type": "faq", "settings": { "question": "How quickly will I see results?", "answer": "Most people notice a difference in how they carry themselves within the first week. Visible, lasting change typically takes 2-4 weeks of consistent use with the exercises in the included course." } },
+        "q5": { "type": "faq", "settings": { "question": "What size should I order?", "answer": "S: chest 70-86 cm / M: 86-96 cm / L: 96-107 cm / XL: 107-122 cm. The strap runs small and is unisex \u2014 we recommend sizing up if you're between sizes." } },
+        "q6": { "type": "faq", "settings": { "question": "Is there a money-back guarantee?", "answer": "Yes. Full 30-day money-back guarantee. If you're not satisfied, contact us for a hassle-free refund." } },
+        "q7": { "type": "faq", "settings": { "question": "What's included in my order?", "answer": "You receive the FrameFix Strap\u2122 and the full Posture Mastery Course (a digital PDF sent to your email after purchase)." } }
       },
-      "block_order": ["block_1", "block_2", "block_3", "block_4", "block_5", "block_6", "block_7"]
+      "block_order": ["q1", "q2", "q3", "q4", "q5", "q6", "q7"]
     },
     "final-cta": {
       "type": "final-cta",
       "settings": {
         "heading": "Your Frame Starts Here",
-        "subheading": "FrameFix Strap™ + Posture Course. Everything you need to stand taller, look sharper, and carry yourself with confidence.",
-        "button_text": "Get Yours Now",
+        "subheading": "FrameFix Strap\u2122 + Posture Course. Stand taller, look sharper, carry yourself with confidence.",
+        "button_text": "Get Yours Now \u2192",
         "button_link": "#product-section"
       }
     }
   },
-  "order": [
-    "hero",
-    "problem-cards",
-    "before-after-slider",
-    "product-main",
-    "results-gallery",
-    "science-section",
-    "course-section",
-    "how-it-works",
-    "faq",
-    "final-cta"
-  ]
+  "order": ["hero", "problem-cards", "before-after", "product-main", "results", "science", "course", "how-it-works", "faq", "final-cta"]
 }

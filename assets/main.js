@@ -1,75 +1,78 @@
 /**
- * Main Theme JavaScript
- * Vanilla JS — no jQuery, no libraries
+ * Main JavaScript — GetPostured Theme
+ * Vanilla JS, no dependencies.
  */
+document.addEventListener('DOMContentLoaded', function () {
 
-document.addEventListener('DOMContentLoaded', () => {
+  /* ==========================================================================
+     1. Scroll Animations (IntersectionObserver)
+     ========================================================================== */
 
-  /* =========================================================
-     1. Scroll Reveal Animation (IntersectionObserver)
-     ========================================================= */
-  const revealElements = document.querySelectorAll('.reveal');
+  const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -60px 0px' };
 
-  if (revealElements.length) {
-    const revealObserver = new IntersectionObserver(
-      (entries, observer) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('active');
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.15 }
-    );
-
-    revealElements.forEach((el) => revealObserver.observe(el));
-  }
-
-  /* =========================================================
-     2. FAQ Accordion
-     ========================================================= */
-  const faqQuestions = document.querySelectorAll('.faq-question');
-
-  faqQuestions.forEach((question) => {
-    question.addEventListener('click', () => {
-      const parentItem = question.closest('.faq-item');
-      const answer = parentItem.querySelector('.faq-answer');
-      const isOpen = parentItem.classList.contains('active');
-
-      // Close every open FAQ first
-      document.querySelectorAll('.faq-item.active').forEach((openItem) => {
-        openItem.classList.remove('active');
-        const openAnswer = openItem.querySelector('.faq-answer');
-        if (openAnswer) openAnswer.style.maxHeight = null;
-      });
-
-      // Toggle the clicked item (open only if it was closed)
-      if (!isOpen) {
-        parentItem.classList.add('active');
-        if (answer) answer.style.maxHeight = answer.scrollHeight + 'px';
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
       }
     });
-  });
+  }, observerOptions);
 
-  /* =========================================================
+  document.querySelectorAll('.animate-in').forEach(el => observer.observe(el));
+
+  /* ==========================================================================
+     2. Sticky Header Scroll Detection
+     ========================================================================== */
+
+  const siteHeader = document.querySelector('.site-header');
+  let lastKnownScrollY = 0;
+  let ticking = false;
+
+  function updateHeader() {
+    if (lastKnownScrollY > 80) {
+      siteHeader && siteHeader.classList.add('is-scrolled');
+    } else {
+      siteHeader && siteHeader.classList.remove('is-scrolled');
+    }
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', function () {
+    lastKnownScrollY = window.scrollY;
+    if (!ticking) {
+      requestAnimationFrame(updateHeader);
+      ticking = true;
+    }
+  }, { passive: true });
+
+  /* ==========================================================================
      3. Mobile Navigation
-     ========================================================= */
-  const menuToggle = document.querySelector('.mobile-menu-toggle');
+     ========================================================================== */
+
   const mobileNav = document.querySelector('.mobile-nav');
-  const menuClose = document.querySelector('.mobile-nav-close');
+  const mobileOverlay = document.querySelector('.mobile-nav-overlay');
+  const headerToggle = document.querySelector('.header__toggle');
 
   function openMobileNav() {
-    document.body.classList.add('nav-open');
+    if (!mobileNav) return;
+    mobileNav.classList.add('is-open');
+    mobileOverlay && mobileOverlay.classList.add('is-open');
+    headerToggle && headerToggle.classList.add('is-active');
+    document.body.classList.add('no-scroll');
   }
 
   function closeMobileNav() {
-    document.body.classList.remove('nav-open');
+    if (!mobileNav) return;
+    mobileNav.classList.remove('is-open');
+    mobileOverlay && mobileOverlay.classList.remove('is-open');
+    headerToggle && headerToggle.classList.remove('is-active');
+    document.body.classList.remove('no-scroll');
   }
 
-  if (menuToggle) {
-    menuToggle.addEventListener('click', () => {
-      if (document.body.classList.contains('nav-open')) {
+  if (headerToggle) {
+    headerToggle.addEventListener('click', function () {
+      if (mobileNav && mobileNav.classList.contains('is-open')) {
         closeMobileNav();
       } else {
         openMobileNav();
@@ -77,189 +80,273 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  if (menuClose) {
-    menuClose.addEventListener('click', closeMobileNav);
+  // Close on overlay click
+  if (mobileOverlay) {
+    mobileOverlay.addEventListener('click', closeMobileNav);
   }
 
-  // Close when clicking outside the nav
-  document.addEventListener('click', (e) => {
-    if (
-      document.body.classList.contains('nav-open') &&
-      mobileNav &&
-      !mobileNav.contains(e.target) &&
-      menuToggle &&
-      !menuToggle.contains(e.target)
-    ) {
-      closeMobileNav();
-    }
-  });
+  // Close on close-button click (if a dedicated close button exists inside the nav)
+  const mobileNavClose = document.querySelector('.mobile-nav__close');
+  if (mobileNavClose) {
+    mobileNavClose.addEventListener('click', closeMobileNav);
+  }
 
   // Close on Escape key
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && document.body.classList.contains('nav-open')) {
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && mobileNav && mobileNav.classList.contains('is-open')) {
       closeMobileNav();
     }
   });
 
-  /* =========================================================
-     4. Smooth Scroll for Anchor Links
-     ========================================================= */
-  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-    anchor.addEventListener('click', (e) => {
-      const targetId = anchor.getAttribute('href');
-      if (targetId === '#') return;
+  // Close when clicking a nav link inside the mobile nav
+  if (mobileNav) {
+    mobileNav.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', closeMobileNav);
+    });
+  }
 
-      const targetEl = document.querySelector(targetId);
-      if (!targetEl) return;
+  /* ==========================================================================
+     4. Smooth Scroll
+     ========================================================================== */
+
+  const HEADER_OFFSET = 72;
+
+  document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
+    anchor.addEventListener('click', function (e) {
+      const targetId = this.getAttribute('href');
+      if (targetId === '#' || targetId === '') return;
+
+      const target = document.querySelector(targetId);
+      if (!target) return;
 
       e.preventDefault();
 
       // Close mobile nav if open
-      closeMobileNav();
+      if (mobileNav && mobileNav.classList.contains('is-open')) {
+        closeMobileNav();
+      }
 
-      const headerOffset = 80;
-      const targetPosition =
-        targetEl.getBoundingClientRect().top + window.pageYOffset - headerOffset;
-
-      window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+      const top = target.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET;
+      window.scrollTo({ top: top, behavior: 'smooth' });
     });
   });
 
-  /* =========================================================
-     5. Product Image Gallery
-     ========================================================= */
-  const thumbnails = document.querySelectorAll('.product-thumbnail');
-  const mainImage = document.querySelector('.product-main-image img');
+  /* ==========================================================================
+     5. FAQ Accordion
+     ========================================================================== */
 
-  thumbnails.forEach((thumb) => {
-    thumb.addEventListener('click', () => {
-      if (!mainImage) return;
+  document.querySelectorAll('.faq-item').forEach(item => {
+    const question = item.querySelector('.faq-question');
+    const answer = item.querySelector('.faq-answer');
 
-      // Swap active class
-      thumbnails.forEach((t) => t.classList.remove('active'));
-      thumb.classList.add('active');
+    question.addEventListener('click', () => {
+      const isOpen = item.classList.contains('is-open');
 
-      // Swap main image src
-      const newSrc = thumb.dataset.src || thumb.querySelector('img')?.src;
-      if (newSrc) mainImage.src = newSrc;
-    });
-  });
+      // Close all others
+      document.querySelectorAll('.faq-item.is-open').forEach(openItem => {
+        openItem.classList.remove('is-open');
+        openItem.querySelector('.faq-answer').style.maxHeight = '0';
+      });
 
-  /* =========================================================
-     6. Size Selector
-     ========================================================= */
-  const sizeOptions = document.querySelectorAll('.size-option');
-
-  sizeOptions.forEach((option) => {
-    option.addEventListener('click', () => {
-      // Remove active from siblings
-      const parent = option.parentElement;
-      parent.querySelectorAll('.size-option').forEach((sib) => sib.classList.remove('active'));
-
-      option.classList.add('active');
-
-      // Update hidden input or data attribute
-      const selectedSize = option.dataset.size || option.textContent.trim();
-      const hiddenInput = parent.querySelector('input[type="hidden"]');
-      if (hiddenInput) {
-        hiddenInput.value = selectedSize;
-      } else {
-        parent.dataset.selectedSize = selectedSize;
+      // Toggle current
+      if (!isOpen) {
+        item.classList.add('is-open');
+        answer.style.maxHeight = answer.scrollHeight + 'px';
       }
     });
   });
 
-  /* =========================================================
-     7. Quantity Selector
-     ========================================================= */
-  document.querySelectorAll('.qty-minus').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const input = btn.parentElement.querySelector('.qty-input');
-      if (!input) return;
-      const current = parseInt(input.value, 10) || 1;
-      input.value = Math.max(1, current - 1);
-    });
-  });
+  /* ==========================================================================
+     6. Product Image Gallery
+     ========================================================================== */
 
-  document.querySelectorAll('.qty-plus').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const input = btn.parentElement.querySelector('.qty-input');
-      if (!input) return;
-      const current = parseInt(input.value, 10) || 1;
-      input.value = Math.min(10, current + 1);
-    });
-  });
+  const mainImageEl = document.querySelector('.product-main-image img');
 
-  /* =========================================================
-     8. Sticky Header
-     ========================================================= */
-  const siteHeader = document.querySelector('.site-header');
+  document.querySelectorAll('.product-thumbnail').forEach(function (thumb) {
+    thumb.addEventListener('click', function () {
+      if (!mainImageEl) return;
 
-  if (siteHeader) {
-    const onScroll = () => {
-      if (window.scrollY > 50) {
-        siteHeader.classList.add('scrolled');
-      } else {
-        siteHeader.classList.remove('scrolled');
+      // Swap main image src from data-full attribute
+      const fullSrc = this.getAttribute('data-full');
+      if (fullSrc) {
+        mainImageEl.setAttribute('src', fullSrc);
       }
-    };
 
-    // Run once on load and then on every scroll
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
+      // Update active state
+      document.querySelectorAll('.product-thumbnail').forEach(t => t.classList.remove('is-active'));
+      this.classList.add('is-active');
+    });
+  });
+
+  /* ==========================================================================
+     7. Product Variant Selectors
+     ========================================================================== */
+
+  const variantIdInput = document.querySelector('input[name="id"]');
+
+  /**
+   * Look up the matching variant from the window.productVariants array
+   * based on the currently selected color and size, then update the
+   * hidden input, displayed price, and main image if applicable.
+   */
+  function updateVariantSelection() {
+    const variants = window.productVariants;
+    if (!variants || !Array.isArray(variants)) return;
+
+    const activeColor = document.querySelector('.color-swatch.is-active');
+    const activeSize = document.querySelector('.size-option.is-active');
+
+    const selectedColor = activeColor ? activeColor.getAttribute('data-color') : null;
+    const selectedSize = activeSize ? activeSize.getAttribute('data-size') : null;
+
+    // Find the matching variant
+    const match = variants.find(function (v) {
+      const colorMatch = !selectedColor || v.option1 === selectedColor || v.color === selectedColor;
+      const sizeMatch = !selectedSize || v.option2 === selectedSize || v.size === selectedSize;
+      return colorMatch && sizeMatch;
+    });
+
+    if (!match) return;
+
+    // Update hidden variant input
+    if (variantIdInput) {
+      variantIdInput.value = match.id;
+    }
+
+    // Update displayed price if variant has different price
+    const priceEl = document.querySelector('.product-price');
+    if (priceEl && match.price != null) {
+      // Shopify prices are in cents
+      const formatted = (match.price / 100).toFixed(2);
+      priceEl.textContent = '$' + formatted;
+    }
+
+    // Update main image if variant has an associated image
+    if (mainImageEl && match.featured_image && match.featured_image.src) {
+      mainImageEl.setAttribute('src', match.featured_image.src);
+    }
   }
 
-  /* =========================================================
-     9. Add to Cart (AJAX)
-     ========================================================= */
-  const cartForms = document.querySelectorAll('.add-to-cart-form');
+  // Color swatches
+  document.querySelectorAll('.color-swatch').forEach(function (swatch) {
+    swatch.addEventListener('click', function () {
+      document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('is-active'));
+      this.classList.add('is-active');
+      updateVariantSelection();
+    });
+  });
 
-  cartForms.forEach((form) => {
-    form.addEventListener('submit', (e) => {
+  // Size options
+  document.querySelectorAll('.size-option').forEach(function (option) {
+    option.addEventListener('click', function () {
+      document.querySelectorAll('.size-option').forEach(s => s.classList.remove('is-active'));
+      this.classList.add('is-active');
+      updateVariantSelection();
+    });
+  });
+
+  /* ==========================================================================
+     8. Quantity Selector
+     ========================================================================== */
+
+  document.querySelectorAll('.qty-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      const wrapper = this.closest('.qty-selector') || this.parentElement;
+      const input = wrapper.querySelector('.qty-input');
+      if (!input) return;
+
+      let value = parseInt(input.value, 10) || 1;
+      const action = this.getAttribute('data-action');
+
+      if (action === 'increase' && value < 10) {
+        value++;
+      } else if (action === 'decrease' && value > 1) {
+        value--;
+      }
+
+      input.value = value;
+
+      // Also update a hidden quantity input if present
+      const hiddenQty = document.querySelector('input[name="quantity"]');
+      if (hiddenQty) {
+        hiddenQty.value = value;
+      }
+    });
+  });
+
+  /* ==========================================================================
+     9. Add to Cart (AJAX)
+     ========================================================================== */
+
+  const addToCartForm = document.querySelector('.add-to-cart-form');
+
+  if (addToCartForm) {
+    addToCartForm.addEventListener('submit', function (e) {
       e.preventDefault();
 
-      const submitBtn = form.querySelector('[type="submit"]');
+      const submitBtn = this.querySelector('[type="submit"]');
       const originalText = submitBtn ? submitBtn.textContent : '';
 
-      // Disable button while request is in flight
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Adding…';
-      }
+      // Show loading state
+      if (submitBtn) submitBtn.classList.add('is-loading');
+
+      const variantId = this.querySelector('input[name="id"]');
+      const qtyInput = this.querySelector('input[name="quantity"]') || this.querySelector('.qty-input');
+      const id = variantId ? variantId.value : null;
+      const quantity = qtyInput ? parseInt(qtyInput.value, 10) || 1 : 1;
 
       fetch('/cart/add.js', {
         method: 'POST',
-        body: new FormData(form),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: id, quantity: quantity })
       })
-        .then((res) => {
-          if (!res.ok) throw new Error('Add to cart failed');
-          return res.json();
+        .then(function (response) {
+          if (!response.ok) throw new Error('Add to cart failed');
+          return response.json();
         })
-        .then(() => {
-          // Brief success state
-          if (submitBtn) submitBtn.textContent = 'Added ✓';
+        .then(function () {
+          // Success — update button text briefly
+          if (submitBtn) {
+            submitBtn.textContent = 'Added!';
+          }
+          updateCartCount();
 
-          // Update cart count in header
-          return fetch('/cart.js');
-        })
-        .then((res) => res.json())
-        .then((cart) => {
-          const cartCount = document.querySelector('.cart-count');
-          if (cartCount) cartCount.textContent = cart.item_count;
-        })
-        .catch((err) => {
-          console.error(err);
-          if (submitBtn) submitBtn.textContent = 'Error – try again';
-        })
-        .finally(() => {
-          // Restore button after a short delay
-          setTimeout(() => {
+          setTimeout(function () {
             if (submitBtn) {
-              submitBtn.disabled = false;
               submitBtn.textContent = originalText;
+              submitBtn.classList.remove('is-loading');
             }
-          }, 2000);
+          }, 1500);
+        })
+        .catch(function (err) {
+          console.error(err);
+          alert('Could not add to cart. Please try again.');
+          if (submitBtn) submitBtn.classList.remove('is-loading');
         });
     });
-  });
+  }
+
+  /* ==========================================================================
+     10. Cart Count Update
+     ========================================================================== */
+
+  function updateCartCount() {
+    fetch('/cart.js')
+      .then(function (res) { return res.json(); })
+      .then(function (cart) {
+        var countEls = document.querySelectorAll('.cart-count');
+        countEls.forEach(function (el) {
+          el.textContent = cart.item_count;
+          if (cart.item_count > 0) {
+            el.classList.add('has-items');
+          } else {
+            el.classList.remove('has-items');
+          }
+        });
+      })
+      .catch(function (err) {
+        console.error('Cart count update failed:', err);
+      });
+  }
+
 });

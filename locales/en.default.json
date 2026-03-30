@@ -1,7 +1,17 @@
 {
   "general": {
-    "404_page_title": "Page not found",
-    "404_page_subtitle": "The page you were looking for does not exist.",
-    "404_page_link": "Return to store"
+    "404": {
+      "title": "Page not found",
+      "subtitle": "The page you were looking for does not exist.",
+      "link": "Return to store"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to Cart",
+      "added": "Added!",
+      "sold_out": "Sold Out",
+      "quantity": "Quantity"
+    }
   }
 }

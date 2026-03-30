@@ -2,7 +2,7 @@
   {
     "name": "theme_info",
     "theme_name": "Postured",
-    "theme_version": "1.0.0",
+    "theme_version": "2.0.0",
     "theme_author": "Postured",
     "theme_documentation_url": "",
     "theme_support_url": ""
@@ -11,50 +11,64 @@
     "name": "Colors",
     "settings": [
       {
-        "type": "header",
-        "content": "Brand Colors"
+        "type": "color",
+        "id": "color_bg_main",
+        "label": "Background — Main",
+        "default": "#0A0A0A"
       },
       {
         "type": "color",
-        "id": "color_background",
-        "label": "Background",
-        "default": "#0B0B0B"
+        "id": "color_bg_section",
+        "label": "Background — Section",
+        "default": "#111111"
       },
       {
         "type": "color",
-        "id": "color_surface",
-        "label": "Surface / Card Background",
-        "default": "#151515"
+        "id": "color_bg_card",
+        "label": "Background — Card",
+        "default": "#161616"
       },
       {
         "type": "color",
-        "id": "color_border",
-        "label": "Border",
-        "default": "#222222"
-      },
-      {
-        "type": "color",
-        "id": "color_accent",
-        "label": "Accent (Gold)",
+        "id": "color_gold",
+        "label": "Gold — Primary",
         "default": "#CDA24E"
       },
       {
         "type": "color",
-        "id": "color_heading",
-        "label": "Heading Text",
-        "default": "#EDEAE4"
+        "id": "color_gold_hover",
+        "label": "Gold — Hover",
+        "default": "#B8923F"
       },
       {
         "type": "color",
-        "id": "color_body",
-        "label": "Body Text",
-        "default": "#A8A49C"
+        "id": "color_text_primary",
+        "label": "Text — Primary",
+        "default": "#F0EDE7"
       },
       {
         "type": "color",
-        "id": "color_success",
-        "label": "Success",
+        "id": "color_text_secondary",
+        "label": "Text — Secondary",
+        "default": "#9A968E"
+      },
+      {
+        "type": "color",
+        "id": "color_text_dim",
+        "label": "Text — Dim",
+        "default": "#5A5750"
+      },
+      {
+        "type": "color",
+        "id": "color_green",
+        "label": "Green — Success",
         "default": "#5DB86C"
+      },
+      {
+        "type": "color",
+        "id": "color_red",
+        "label": "Red — Error",
+        "default": "#CC4E47"
       }
     ]
   },
@@ -62,20 +76,16 @@
     "name": "Typography",
     "settings": [
       {
-        "type": "header",
-        "content": "Fonts"
+        "type": "text",
+        "id": "type_heading_font",
+        "label": "Heading font family",
+        "default": "Instrument Serif"
       },
       {
         "type": "text",
-        "id": "font_heading",
-        "label": "Heading Font Family",
-        "default": "'Playfair Display', serif"
-      },
-      {
-        "type": "text",
-        "id": "font_body",
-        "label": "Body Font Family",
-        "default": "'DM Sans', sans-serif"
+        "id": "type_body_font",
+        "label": "Body font family",
+        "default": "DM Sans"
       }
     ]
   },
@@ -84,15 +94,15 @@
     "settings": [
       {
         "type": "text",
-        "id": "social_instagram",
+        "id": "social_instagram_url",
         "label": "Instagram URL",
-        "default": "https://instagram.com/getpostured"
+        "default": ""
       },
       {
         "type": "text",
-        "id": "social_tiktok",
+        "id": "social_tiktok_url",
         "label": "TikTok URL",
-        "default": "https://tiktok.com/@getpostured"
+        "default": ""
       }
     ]
   }

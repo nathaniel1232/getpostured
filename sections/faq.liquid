@@ -1,43 +1,23 @@
-<section class="faq-section reveal" id="faq-section">
+<section class="faq-section section-padding" id="faq-section">
   <div class="container">
-    <h2 class="section-heading">{{ section.settings.heading }}</h2>
-
+    <h2 class="section-heading animate-in">{{ section.settings.heading }}</h2>
     <div class="faq-container">
-      {%- for block in section.blocks -%}
-        <div class="faq-item" {{ block.shopify_attributes }}>
+      {% for block in section.blocks %}
+        <div class="faq-item animate-in" {{ block.shopify_attributes }}>
           <button class="faq-question" aria-expanded="false">
-            <span>{{ block.settings.question }}</span>
-            <span class="faq-icon">+</span>
+            <span class="faq-question__text">{{ block.settings.question }}</span>
+            <span class="faq-question__icon">
+              {% render 'svg-icons', icon: 'chevron-down' %}
+            </span>
           </button>
           <div class="faq-answer">
-            <p>{{ block.settings.answer }}</p>
+            <div class="faq-answer__inner">{{ block.settings.answer }}</div>
           </div>
         </div>
-      {%- endfor -%}
+      {% endfor %}
     </div>
   </div>
 </section>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.faq-question').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var item = this.closest('.faq-item');
-        var isActive = item.classList.contains('active');
-
-        item.closest('.faq-container').querySelectorAll('.faq-item').forEach(function (el) {
-          el.classList.remove('active');
-          el.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
-        });
-
-        if (!isActive) {
-          item.classList.add('active');
-          this.setAttribute('aria-expanded', 'true');
-        }
-      });
-    });
-  });
-</script>
 
 {% schema %}
 {
@@ -47,7 +27,7 @@
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "Frequently Asked Questions"
+      "default": "Questions? We've Got Answers."
     }
   ],
   "blocks": [
@@ -61,7 +41,7 @@
           "label": "Question"
         },
         {
-          "type": "textarea",
+          "type": "richtext",
           "id": "answer",
           "label": "Answer"
         }
@@ -75,50 +55,50 @@
         {
           "type": "faq",
           "settings": {
-            "question": "How long should I wear it per day?",
-            "answer": "Start with 15-30 minutes and gradually increase to 1-2 hours. The included course has a full 4-week plan."
+            "question": "How long should I wear it each day?",
+            "answer": "<p>Start with 15-30 minutes in your first week. Gradually increase to 1-2 hours. The included Posture Course has a detailed 4-week plan.</p>"
           }
         },
         {
           "type": "faq",
           "settings": {
-            "question": "Will this actually improve my jawline?",
-            "answer": "Posture affects how your jawline appears by changing head and neck positioning. It won't change bone structure, but it can significantly sharpen how your features look."
+            "question": "Will this improve my jawline?",
+            "answer": "<p>Posture affects how your jawline appears by changing head and neck positioning. It won't change bone structure, but proper alignment can significantly sharpen how your features look.</p>"
           }
         },
         {
           "type": "faq",
           "settings": {
-            "question": "Can I wear it under clothing?",
-            "answer": "Yes. The FrameFix Strap is designed to be slim and discreet enough to wear under most shirts."
+            "question": "Can I wear it under my clothes?",
+            "answer": "<p>Yes. The FrameFix Strap is slim and lightweight enough to wear discreetly under most shirts.</p>"
           }
         },
         {
           "type": "faq",
           "settings": {
-            "question": "How long until I see results?",
-            "answer": "Many people notice a difference in how they carry themselves within the first week. Visible, lasting improvement typically takes 2-4 weeks of consistent use."
+            "question": "How quickly will I see results?",
+            "answer": "<p>Most people notice a difference in how they carry themselves within the first week. Visible, lasting change typically takes 2-4 weeks of consistent use with the exercises in the included course.</p>"
           }
         },
         {
           "type": "faq",
           "settings": {
-            "question": "What size should I get?",
-            "answer": "S fits chest 28-34 inches, M fits 34-38, L fits 38-42, XL fits 42-48. When in between sizes, go up."
+            "question": "What size should I order?",
+            "answer": "<p>S: chest 70-86 cm / M: 86-96 cm / L: 96-107 cm / XL: 107-122 cm. The strap runs small and is unisex — we recommend sizing up if you're between sizes.</p>"
           }
         },
         {
           "type": "faq",
           "settings": {
-            "question": "Is there a guarantee?",
-            "answer": "Yes. 30-day money-back guarantee, no questions asked."
+            "question": "Is there a money-back guarantee?",
+            "answer": "<p>Yes. Full 30-day money-back guarantee. If you're not satisfied, contact us for a hassle-free refund.</p>"
           }
         },
         {
           "type": "faq",
           "settings": {
-            "question": "What's included with my order?",
-            "answer": "The FrameFix Strap™ and the full Posture Mastery Course (digital PDF download sent via email after purchase)."
+            "question": "What's included in my order?",
+            "answer": "<p>You receive the FrameFix Strap and the full Posture Mastery Course (a digital PDF sent to your email after purchase).</p>"
           }
         }
       ]
