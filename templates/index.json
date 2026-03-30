@@ -129,8 +129,10 @@
         "r2": {
           "type": "result",
           "settings": {
+            "before_image": "shopify://shop_images/IMG_0338.jpg",
+            "after_image": "shopify://shop_images/IMG_0336.jpg",
             "name": "Jake R.",
-            "quote": "People keep telling me I look taller. I'm the same height — just standing properly."
+            "quote": "Fixing my posture made my jaw more visible and gave me so much confidence"
           }
         },
         "r3": {
