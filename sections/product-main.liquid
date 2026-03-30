@@ -61,6 +61,7 @@
 
         <!-- Product Form -->
         <form action="/cart/add" method="post" class="add-to-cart-form" id="add-to-cart-form">
+          <input type="hidden" name="return_to" value="/cart">
 
           <!-- Color Selector -->
           {% assign color_option = nil %}

@@ -1,67 +1,71 @@
 /**
  * Before / After Image Comparison Slider
- * Vanilla JS, no dependencies.
- *
- * Expected markup per slider:
- *   .ba-slider
- *     .ba-container
- *       .ba-before-wrapper  (full-width image)
- *       .ba-after-wrapper   (clip-revealed image, width controlled by JS)
- *       .ba-handle          (draggable divider)
+ * - "before" image sits as the full background
+ * - "after" image sits on top, clipped by the wrapper width
+ * - dragging the handle reveals more or less of the after image
  */
 document.addEventListener('DOMContentLoaded', function () {
 
-  document.querySelectorAll('.ba-slider').forEach(slider => {
-    const container = slider.querySelector('.ba-container');
-    const afterWrapper = slider.querySelector('.ba-after-wrapper');
-    const handle = slider.querySelector('.ba-handle');
-    if (!container || !afterWrapper || !handle) return;
+  document.querySelectorAll('.ba-slider').forEach(function (slider) {
+    var container  = slider.querySelector('.ba-container');
+    var afterWrap  = slider.querySelector('.ba-after-wrapper');
+    var handle     = slider.querySelector('.ba-handle');
+    var afterImg   = afterWrap ? afterWrap.querySelector('img') : null;
+    if (!container || !afterWrap || !handle) return;
 
-    const afterImg = afterWrapper.querySelector('img');
-    let isDragging = false;
+    var isDragging = false;
+    var startPercent = 0.5;
 
-    /* Keep after image sized to container (not wrapper) */
-    function syncAfterImageWidth() {
-      if (afterImg) afterImg.style.width = container.offsetWidth + 'px';
-    }
-    syncAfterImageWidth();
-    window.addEventListener('resize', syncAfterImageWidth);
-
-    function setPosition(x) {
-      const rect = container.getBoundingClientRect();
-      let pos = (x - rect.left) / rect.width;
-      pos = Math.max(0.05, Math.min(0.95, pos));
-      afterWrapper.style.width = (pos * 100) + '%';
-      handle.style.left = (pos * 100) + '%';
+    /* ── sync after-image to full container width ── */
+    function syncAfterWidth() {
+      if (afterImg) {
+        afterImg.style.width = container.offsetWidth + 'px';
+      }
     }
 
-    // Mouse events
-    handle.addEventListener('mousedown', (e) => {
+    /* ── position handle + clip wrapper ── */
+    function setPosition(clientX) {
+      var rect = container.getBoundingClientRect();
+      var pct  = (clientX - rect.left) / rect.width;
+      pct = Math.max(0.03, Math.min(0.97, pct));
+      afterWrap.style.width = (pct * 100) + '%';
+      handle.style.left     = (pct * 100) + '%';
+    }
+
+    /* initial render */
+    syncAfterWidth();
+    setPosition(container.getBoundingClientRect().left + container.offsetWidth * startPercent);
+    window.addEventListener('resize', function () {
+      syncAfterWidth();
+    });
+
+    /* ── Mouse ── */
+    handle.addEventListener('mousedown', function (e) {
       isDragging = true;
       e.preventDefault();
     });
-    document.addEventListener('mousemove', (e) => {
+    document.addEventListener('mousemove', function (e) {
       if (isDragging) setPosition(e.clientX);
     });
-    document.addEventListener('mouseup', () => {
+    document.addEventListener('mouseup', function () {
       isDragging = false;
     });
 
-    // Touch events
-    handle.addEventListener('touchstart', (e) => {
+    /* ── Touch ── */
+    handle.addEventListener('touchstart', function (e) {
       isDragging = true;
       e.preventDefault();
     }, { passive: false });
-    document.addEventListener('touchmove', (e) => {
+    document.addEventListener('touchmove', function (e) {
       if (isDragging) setPosition(e.touches[0].clientX);
     }, { passive: false });
-    document.addEventListener('touchend', () => {
+    document.addEventListener('touchend', function () {
       isDragging = false;
     });
 
-    // Click anywhere on container
-    container.addEventListener('click', (e) => {
-      if (!isDragging) setPosition(e.clientX);
+    /* ── Click anywhere on container ── */
+    container.addEventListener('click', function (e) {
+      setPosition(e.clientX);
     });
   });
 

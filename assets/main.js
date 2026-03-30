@@ -309,51 +309,33 @@ document.addEventListener('DOMContentLoaded', function () {
      9. Add to Cart (AJAX)
      ========================================================================== */
 
+  /* ==========================================================================
+     9. Add to Cart — submit form, redirect to /cart
+     ========================================================================== */
+
   const addToCartForm = document.querySelector('.add-to-cart-form');
 
   if (addToCartForm) {
-    addToCartForm.addEventListener('submit', function (e) {
-      e.preventDefault();
+    // Make sure the hidden return_to field exists so Shopify redirects to /cart
+    var returnInput = addToCartForm.querySelector('input[name="return_to"]');
+    if (!returnInput) {
+      returnInput = document.createElement('input');
+      returnInput.type = 'hidden';
+      returnInput.name = 'return_to';
+      addToCartForm.appendChild(returnInput);
+    }
+    returnInput.value = '/cart';
 
-      const submitBtn = this.querySelector('[type="submit"]');
-      const originalText = submitBtn ? submitBtn.textContent : '';
-
-      // Show loading state
+    // Sync quantity from bundle selector or qty stepper into the quantity field
+    addToCartForm.addEventListener('submit', function () {
+      var activePack = this.querySelector('.bundle-option.is-active');
+      var qtyField = this.querySelector('input[name="quantity"]');
+      if (activePack && qtyField) {
+        qtyField.value = parseInt(activePack.getAttribute('data-qty'), 10) || 1;
+      }
+      var submitBtn = this.querySelector('[type="submit"]');
       if (submitBtn) submitBtn.classList.add('is-loading');
-
-      const variantId = this.querySelector('input[name="id"]');
-      const qtyInput = this.querySelector('input[name="quantity"]') || this.querySelector('.qty-input');
-      const id = variantId ? variantId.value : null;
-      const quantity = qtyInput ? parseInt(qtyInput.value, 10) || 1 : 1;
-
-      fetch('/cart/add.js', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: id, quantity: quantity })
-      })
-        .then(function (response) {
-          if (!response.ok) throw new Error('Add to cart failed');
-          return response.json();
-        })
-        .then(function () {
-          // Success — update button text briefly
-          if (submitBtn) {
-            submitBtn.textContent = 'Added!';
-          }
-          updateCartCount();
-
-          setTimeout(function () {
-            if (submitBtn) {
-              submitBtn.textContent = originalText;
-              submitBtn.classList.remove('is-loading');
-            }
-          }, 1500);
-        })
-        .catch(function (err) {
-          console.error(err);
-          alert('Could not add to cart. Please try again.');
-          if (submitBtn) submitBtn.classList.remove('is-loading');
-        });
+      // Let the form submit normally — Shopify will redirect to /cart
     });
   }
 
