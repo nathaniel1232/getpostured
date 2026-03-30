@@ -735,11 +735,11 @@ p {
 
 .ba-after-wrapper {
   position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 50%;
-  overflow: hidden;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  clip-path: inset(0 50% 0 0);
+  pointer-events: none;
 }
 
 .ba-after-wrapper img,
@@ -747,10 +747,9 @@ p {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100vw; /* overridden by JS to container width */
+  width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: left center;
 }
 
 .ba-handle {
