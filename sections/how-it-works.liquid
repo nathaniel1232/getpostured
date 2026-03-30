@@ -1,0 +1,75 @@
+<section class="how-it-works reveal" id="how-it-works">
+  <div class="container">
+    <h2 class="section-heading">{{ section.settings.heading }}</h2>
+
+    <div class="steps-grid">
+      {%- for block in section.blocks -%}
+        <div class="step-card" {{ block.shopify_attributes }}>
+          <div class="step-number">{{ forloop.index }}</div>
+          <h3 class="step-card__title">{{ block.settings.title }}</h3>
+          <p class="step-card__description">{{ block.settings.description }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "How It Works",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "How It Works"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Step title"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Step description"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "How It Works",
+      "blocks": [
+        {
+          "type": "step",
+          "settings": {
+            "title": "Put It On",
+            "description": "Wear the FrameFix Strap like a backpack. Adjust for a snug, comfortable fit."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "title": "Build Awareness",
+            "description": "The strap gently pulls your shoulders back, teaching your body correct alignment."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "title": "See Results",
+            "description": "Within weeks, your posture improves — your frame, jawline, and confidence follow."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

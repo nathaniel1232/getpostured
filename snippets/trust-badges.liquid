@@ -1,0 +1,23 @@
+<div class="trust-badges">
+  {% for i in (1..4) %}
+    {% assign badge_text = 'badge_' | append: i %}
+    {% case i %}
+      {% when 1 %}
+        {% assign icon = '🔬' %}
+        {% assign default_text = 'Science-Backed' %}
+      {% when 2 %}
+        {% assign icon = '📖' %}
+        {% assign default_text = 'Free Course Included' %}
+      {% when 3 %}
+        {% assign icon = '✅' %}
+        {% assign default_text = '30-Day Guarantee' %}
+      {% when 4 %}
+        {% assign icon = '🚚' %}
+        {% assign default_text = 'Free Shipping' %}
+    {% endcase %}
+    <div class="trust-badge">
+      <span class="trust-badge__icon">{{ icon }}</span>
+      <span class="trust-badge__text">{{ default_text }}</span>
+    </div>
+  {% endfor %}
+</div>

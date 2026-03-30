@@ -1,0 +1,99 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Postured",
+    "theme_version": "1.0.0",
+    "theme_author": "Postured",
+    "theme_documentation_url": "",
+    "theme_support_url": ""
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Brand Colors"
+      },
+      {
+        "type": "color",
+        "id": "color_background",
+        "label": "Background",
+        "default": "#0B0B0B"
+      },
+      {
+        "type": "color",
+        "id": "color_surface",
+        "label": "Surface / Card Background",
+        "default": "#151515"
+      },
+      {
+        "type": "color",
+        "id": "color_border",
+        "label": "Border",
+        "default": "#222222"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Accent (Gold)",
+        "default": "#CDA24E"
+      },
+      {
+        "type": "color",
+        "id": "color_heading",
+        "label": "Heading Text",
+        "default": "#EDEAE4"
+      },
+      {
+        "type": "color",
+        "id": "color_body",
+        "label": "Body Text",
+        "default": "#A8A49C"
+      },
+      {
+        "type": "color",
+        "id": "color_success",
+        "label": "Success",
+        "default": "#5DB86C"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Fonts"
+      },
+      {
+        "type": "text",
+        "id": "font_heading",
+        "label": "Heading Font Family",
+        "default": "'Playfair Display', serif"
+      },
+      {
+        "type": "text",
+        "id": "font_body",
+        "label": "Body Font Family",
+        "default": "'DM Sans', sans-serif"
+      }
+    ]
+  },
+  {
+    "name": "Social Media",
+    "settings": [
+      {
+        "type": "text",
+        "id": "social_instagram",
+        "label": "Instagram URL",
+        "default": "https://instagram.com/getpostured"
+      },
+      {
+        "type": "text",
+        "id": "social_tiktok",
+        "label": "TikTok URL",
+        "default": "https://tiktok.com/@getpostured"
+      }
+    ]
+  }
+]

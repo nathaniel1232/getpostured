@@ -1,0 +1,31 @@
+{
+  "sections": {
+    "product-main": {
+      "type": "product-main",
+      "settings": {}
+    },
+    "results-gallery": {
+      "type": "results-gallery",
+      "settings": {}
+    },
+    "science-section": {
+      "type": "science-section",
+      "settings": {}
+    },
+    "faq": {
+      "type": "faq",
+      "settings": {}
+    },
+    "final-cta": {
+      "type": "final-cta",
+      "settings": {}
+    }
+  },
+  "order": [
+    "product-main",
+    "results-gallery",
+    "science-section",
+    "faq",
+    "final-cta"
+  ]
+}

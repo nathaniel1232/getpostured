@@ -1,0 +1,314 @@
+<style>
+  .site-footer {
+    background: #0B0B0B;
+    color: rgba(255, 255, 255, 0.7);
+    padding: 80px 0 40px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .footer-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: 1.5fr repeat(auto-fit, minmax(140px, 1fr));
+    gap: 60px;
+    margin-bottom: 60px;
+  }
+
+  /* Brand column */
+  .footer-brand-name {
+    font-family: var(--font-heading, 'Arial Black', sans-serif);
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    margin: 0 0 12px;
+    line-height: 1.1;
+  }
+
+  .footer-tagline {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.45);
+    margin: 0 0 28px;
+    line-height: 1.5;
+  }
+
+  .footer-social {
+    display: flex;
+    gap: 16px;
+  }
+
+  .footer-social a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    transition: border-color 0.25s ease, color 0.25s ease;
+  }
+
+  .footer-social a:hover {
+    border-color: rgba(255, 255, 255, 0.4);
+    color: #FFFFFF;
+  }
+
+  .footer-social svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+  }
+
+  /* Link columns */
+  .footer-link-group h4 {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    margin: 0 0 20px;
+  }
+
+  .footer-link-group ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .footer-link-group a {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .footer-link-group a:hover {
+    color: #FFFFFF;
+  }
+
+  /* Bottom bar */
+  .footer-bottom {
+    padding-top: 32px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .footer-copyright {
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.3);
+    margin: 0;
+    letter-spacing: 0.02em;
+  }
+
+  @media (max-width: 768px) {
+    .site-footer {
+      padding: 60px 0 32px;
+    }
+
+    .footer-inner {
+      padding: 0 20px;
+    }
+
+    .footer-top {
+      grid-template-columns: 1fr;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .footer-brand-name {
+      font-size: 1.6rem;
+    }
+  }
+</style>
+
+<footer class="site-footer" data-section-id="{{ section.id }}">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand-col">
+        <p class="footer-brand-name">{{ section.settings.brand_text }}</p>
+        <p class="footer-tagline">{{ section.settings.tagline }}</p>
+
+        <div class="footer-social">
+          {%- if settings.social_instagram != blank -%}
+            <a href="{{ settings.social_instagram }}" target="_blank" rel="noopener" aria-label="Instagram">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.17.054 1.97.24 2.43.403a4.088 4.088 0 011.47.957c.453.453.773.898.957 1.47.163.46.349 1.26.404 2.43.058 1.266.069 1.646.069 4.85s-.012 3.584-.07 4.85c-.054 1.17-.24 1.97-.403 2.43a4.088 4.088 0 01-.957 1.47 4.088 4.088 0 01-1.47.957c-.46.163-1.26.349-2.43.404-1.266.058-1.646.069-4.85.069s-3.584-.012-4.85-.07c-1.17-.054-1.97-.24-2.43-.403a4.088 4.088 0 01-1.47-.957 4.088 4.088 0 01-.957-1.47c-.163-.46-.349-1.26-.404-2.43C2.175 15.584 2.163 15.204 2.163 12s.012-3.584.07-4.85c.054-1.17.24-1.97.403-2.43a4.088 4.088 0 01.957-1.47A4.088 4.088 0 015.063 2.293c.46-.163 1.26-.349 2.43-.404C8.759 1.831 9.139 1.82 12 1.82zM12 0C8.741 0 8.333.014 7.053.072 5.775.131 4.903.333 4.14.63a5.876 5.876 0 00-2.126 1.384A5.876 5.876 0 00.63 4.14C.333 4.903.131 5.775.072 7.053.014 8.333 0 8.741 0 12s.014 3.667.072 4.947c.059 1.278.261 2.15.558 2.913a5.876 5.876 0 001.384 2.126A5.876 5.876 0 004.14 23.37c.763.297 1.635.499 2.913.558C8.333 23.986 8.741 24 12 24s3.667-.014 4.947-.072c1.278-.059 2.15-.261 2.913-.558a5.876 5.876 0 002.126-1.384 5.876 5.876 0 001.384-2.126c.297-.763.499-1.635.558-2.913C23.986 15.667 24 15.259 24 12s-.014-3.667-.072-4.947c-.059-1.278-.261-2.15-.558-2.913a5.876 5.876 0 00-1.384-2.126A5.876 5.876 0 0019.86.63C19.097.333 18.225.131 16.947.072 15.667.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/>
+              </svg>
+            </a>
+          {%- endif -%}
+
+          {%- if settings.social_tiktok != blank -%}
+            <a href="{{ settings.social_tiktok }}" target="_blank" rel="noopener" aria-label="TikTok">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.34-6.34V9.17a8.16 8.16 0 004.76 1.52v-3.4a4.85 4.85 0 01-1-.6z"/>
+              </svg>
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'link_group' -%}
+          <div class="footer-link-group" {{ block.shopify_attributes }}>
+            <h4>{{ block.settings.heading }}</h4>
+            <ul>
+              {%- if block.settings.link_1_text != blank -%}
+                <li><a href="{{ block.settings.link_1_url }}">{{ block.settings.link_1_text }}</a></li>
+              {%- endif -%}
+              {%- if block.settings.link_2_text != blank -%}
+                <li><a href="{{ block.settings.link_2_url }}">{{ block.settings.link_2_text }}</a></li>
+              {%- endif -%}
+              {%- if block.settings.link_3_text != blank -%}
+                <li><a href="{{ block.settings.link_3_url }}">{{ block.settings.link_3_text }}</a></li>
+              {%- endif -%}
+              {%- if block.settings.link_4_text != blank -%}
+                <li><a href="{{ block.settings.link_4_url }}">{{ block.settings.link_4_text }}</a></li>
+              {%- endif -%}
+            </ul>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    <div class="footer-bottom">
+      <p class="footer-copyright">{{ section.settings.copyright }}</p>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "tag": "section",
+  "class": "footer-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "brand_text",
+      "label": "Brand name",
+      "default": "POSTURED"
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "Fix your posture. Sharpen your frame."
+    },
+    {
+      "type": "text",
+      "id": "copyright",
+      "label": "Copyright text",
+      "default": "© 2026 Postured — All rights reserved"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link_group",
+      "name": "Link group",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Group heading",
+          "default": "Links"
+        },
+        {
+          "type": "text",
+          "id": "link_1_text",
+          "label": "Link 1 text"
+        },
+        {
+          "type": "url",
+          "id": "link_1_url",
+          "label": "Link 1 URL"
+        },
+        {
+          "type": "text",
+          "id": "link_2_text",
+          "label": "Link 2 text"
+        },
+        {
+          "type": "url",
+          "id": "link_2_url",
+          "label": "Link 2 URL"
+        },
+        {
+          "type": "text",
+          "id": "link_3_text",
+          "label": "Link 3 text"
+        },
+        {
+          "type": "url",
+          "id": "link_3_url",
+          "label": "Link 3 URL"
+        },
+        {
+          "type": "text",
+          "id": "link_4_text",
+          "label": "Link 4 text"
+        },
+        {
+          "type": "url",
+          "id": "link_4_url",
+          "label": "Link 4 URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer",
+      "settings": {
+        "brand_text": "POSTURED",
+        "tagline": "Fix your posture. Sharpen your frame.",
+        "copyright": "© 2026 Postured — All rights reserved"
+      },
+      "blocks": [
+        {
+          "type": "link_group",
+          "settings": {
+            "heading": "Shop",
+            "link_1_text": "Shop",
+            "link_1_url": "/collections/all",
+            "link_2_text": "Shipping & Returns",
+            "link_2_url": "/policies/shipping-policy"
+          }
+        },
+        {
+          "type": "link_group",
+          "settings": {
+            "heading": "Company",
+            "link_1_text": "About",
+            "link_1_url": "/pages/about",
+            "link_2_text": "Contact",
+            "link_2_url": "/pages/contact"
+          }
+        },
+        {
+          "type": "link_group",
+          "settings": {
+            "heading": "Legal",
+            "link_1_text": "Privacy Policy",
+            "link_1_url": "/policies/privacy-policy",
+            "link_2_text": "Terms of Service",
+            "link_2_url": "/policies/terms-of-service"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

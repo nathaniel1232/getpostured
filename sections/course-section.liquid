@@ -1,0 +1,129 @@
+<section class="course-section reveal" id="course-section">
+  <div class="container">
+    <h2 class="section-heading">{{ section.settings.heading }}</h2>
+    <p class="section-subheading">{{ section.settings.subheading }}</p>
+
+    <div class="course-layout">
+      <div class="course-preview">
+        <div class="course-preview__icon">📖</div>
+        <h3 class="course-preview__title">Posture Mastery Course</h3>
+        <p class="course-preview__subtitle">Complete Digital Guide</p>
+      </div>
+
+      <div class="course-chapters">
+        <ol class="chapter-list">
+          {%- for block in section.blocks -%}
+            <li class="chapter-item" {{ block.shopify_attributes }}>
+              <span class="chapter-number">{{ forloop.index }}</span>
+              <div class="chapter-info">
+                <strong class="chapter-title">{{ block.settings.title }}</strong>
+                <span class="chapter-subtitle">{{ block.settings.subtitle }}</span>
+              </div>
+            </li>
+          {%- endfor -%}
+        </ol>
+      </div>
+    </div>
+
+    <p class="course-emphasis">{{ section.settings.emphasis_text }}</p>
+    <a href="{{ section.settings.button_link }}" class="btn-primary">{{ section.settings.button_text }}</a>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Course Section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Included Free: The Posture Mastery Course"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "A complete 5-chapter course on how to fix your posture — delivered as a digital download with every purchase."
+    },
+    {
+      "type": "text",
+      "id": "emphasis_text",
+      "label": "Emphasis text",
+      "default": "This isn't just a strap — it's a complete posture system."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Get the Strap + Course"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link",
+      "default": "#product-section"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "chapter",
+      "name": "Chapter",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Chapter title"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Chapter subtitle"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Course Section",
+      "blocks": [
+        {
+          "type": "chapter",
+          "settings": {
+            "title": "Why Posture Matters",
+            "subtitle": "Jawline, height, confidence, perception"
+          }
+        },
+        {
+          "type": "chapter",
+          "settings": {
+            "title": "What Goes Wrong",
+            "subtitle": "Forward head posture, Upper Crossed Syndrome"
+          }
+        },
+        {
+          "type": "chapter",
+          "settings": {
+            "title": "The Hidden Effects",
+            "subtitle": "Breathing, energy, mood, pain"
+          }
+        },
+        {
+          "type": "chapter",
+          "settings": {
+            "title": "How to Fix It",
+            "subtitle": "FrameFix Strap guide, exercises, 4-week plan"
+          }
+        },
+        {
+          "type": "chapter",
+          "settings": {
+            "title": "Building the Habit",
+            "subtitle": "Frame, consistency, long-term results"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
