@@ -1,0 +1,63 @@
+<section class="main-account section-padding" id="main-content">
+  <div class="container">
+
+    <div class="account-header">
+      <h1 class="section-heading" style="text-align:left;">My Account</h1>
+      <a class="btn-secondary" href="{{ routes.account_logout_url }}">Sign Out</a>
+    </div>
+
+    <div class="account-layout">
+
+      <!-- Recent orders -->
+      <div class="account-orders">
+        <h2 class="account-section-title">Order History</h2>
+
+        {%- if customer.orders.size > 0 -%}
+          <table class="order-table">
+            <thead>
+              <tr>
+                <th>Order</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Total</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {%- for order in customer.orders -%}
+                <tr>
+                  <td><a class="form-link" href="{{ order.customer_url }}">{{ order.name }}</a></td>
+                  <td>{{ order.created_at | time_tag: format: 'date' }}</td>
+                  <td>{{ order.financial_status_label }}</td>
+                  <td>{{ order.total_price | money }}</td>
+                  <td><a class="form-link" href="{{ order.customer_url }}">View →</a></td>
+                </tr>
+              {%- endfor -%}
+            </tbody>
+          </table>
+        {%- else -%}
+          <p class="account-empty">You haven't placed any orders yet. <a class="form-link" href="/collections/all">Start shopping →</a></p>
+        {%- endif -%}
+      </div>
+
+      <!-- Account details -->
+      <div class="account-details">
+        <h2 class="account-section-title">Account Details</h2>
+        <address class="account-address">
+          {{ customer.default_address | format_address }}
+        </address>
+        <a class="form-link" href="{{ routes.account_addresses_url }}">Manage addresses →</a>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Account",
+  "settings": [],
+  "presets": [{ "name": "Account" }]
+}
+{% endschema %}

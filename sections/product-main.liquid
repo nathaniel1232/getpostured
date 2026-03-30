@@ -14,6 +14,14 @@
           {% else %}
             <div style="aspect-ratio:1;background:var(--bg-card);display:flex;align-items:center;justify-content:center;color:var(--text-dim);border-radius:var(--radius-md);">Product Image</div>
           {% endif %}
+          {% if product.images.size > 1 %}
+            <button class="gallery-arrow gallery-arrow--prev" type="button" aria-label="Previous image">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <button class="gallery-arrow gallery-arrow--next" type="button" aria-label="Next image">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+            </button>
+          {% endif %}
         </div>
         {% if product.images.size > 1 %}
           <div class="product-thumbnails">
@@ -112,15 +120,71 @@
             </div>
           {% endif %}
 
-          <!-- Quantity -->
-          <div class="variant-group">
-            <label class="variant-label">Quantity</label>
-            <div class="quantity-selector">
-              <button type="button" class="qty-btn" data-action="decrease" aria-label="Decrease quantity">-</button>
-              <input type="text" class="qty-input" value="1" min="1" max="10" readonly aria-label="Quantity">
-              <button type="button" class="qty-btn" data-action="increase" aria-label="Increase quantity">+</button>
+          <!-- Bundle Packs / Quantity -->
+          {% if section.settings.show_bundles %}
+            {%- assign base_price = product.price | default: 4995 -%}
+            {%- assign disc2 = section.settings.bundle_2_discount -%}
+            {%- assign disc3 = section.settings.bundle_3_discount -%}
+            {%- assign save2_cents = base_price | times: disc2 | divided_by: 100 -%}
+            {%- assign each2 = base_price | minus: save2_cents -%}
+            {%- assign total2 = each2 | times: 2 -%}
+            {%- assign save3_cents = base_price | times: disc3 | divided_by: 100 -%}
+            {%- assign each3 = base_price | minus: save3_cents -%}
+            {%- assign total3 = each3 | times: 3 -%}
+            <div class="variant-group bundle-group">
+              <label class="variant-label">Choose Your Pack</label>
+              <div class="bundle-options">
+
+                <button type="button" class="bundle-option is-active" data-qty="1">
+                  <div class="bundle-option__left">
+                    <span class="bundle-option__count">1×</span>
+                    <span class="bundle-option__name">{{ section.settings.bundle_1_label }}</span>
+                  </div>
+                  <div class="bundle-option__right">
+                    <span class="bundle-option__total">{{ base_price | money }}</span>
+                    <span class="bundle-option__per"></span>
+                  </div>
+                </button>
+
+                <button type="button" class="bundle-option" data-qty="2">
+                  {% if disc2 > 0 %}<span class="bundle-badge">Save {{ disc2 }}%</span>{% endif %}
+                  <div class="bundle-option__left">
+                    <span class="bundle-option__count">2×</span>
+                    <span class="bundle-option__name">{{ section.settings.bundle_2_label }}</span>
+                  </div>
+                  <div class="bundle-option__right">
+                    <span class="bundle-option__total">{{ total2 | money }}</span>
+                    <span class="bundle-option__per">{{ each2 | money }} each</span>
+                  </div>
+                </button>
+
+                <button type="button" class="bundle-option" data-qty="3">
+                  {% if disc3 > 0 %}<span class="bundle-badge bundle-badge--best">Save {{ disc3 }}%</span>{% endif %}
+                  <div class="bundle-option__left">
+                    <span class="bundle-option__count">3×</span>
+                    <span class="bundle-option__name">{{ section.settings.bundle_3_label }}</span>
+                  </div>
+                  <div class="bundle-option__right">
+                    <span class="bundle-option__total">{{ total3 | money }}</span>
+                    <span class="bundle-option__per">{{ each3 | money }} each</span>
+                  </div>
+                </button>
+
+              </div>
+              {% if section.settings.bundle_note != blank %}
+                <p class="bundle-note">{{ section.settings.bundle_note }}</p>
+              {% endif %}
             </div>
-          </div>
+          {% else %}
+            <div class="variant-group">
+              <label class="variant-label">Quantity</label>
+              <div class="quantity-selector">
+                <button type="button" class="qty-btn" data-action="decrease" aria-label="Decrease quantity">−</button>
+                <input type="text" class="qty-input" value="1" min="1" max="10" readonly aria-label="Quantity">
+                <button type="button" class="qty-btn" data-action="increase" aria-label="Increase quantity">+</button>
+              </div>
+            </div>
+          {% endif %}
 
           <!-- Hidden variant input -->
           <input type="hidden" name="id" value="{% if product.selected_or_first_available_variant %}{{ product.selected_or_first_available_variant.id }}{% endif %}">
@@ -218,6 +282,52 @@
       "id": "show_compare_price",
       "label": "Show Compare at Price",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "Bundle Packs"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_bundles",
+      "label": "Show bundle pack selector",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "bundle_1_label",
+      "label": "1-Pack label",
+      "default": "Standard"
+    },
+    {
+      "type": "text",
+      "id": "bundle_2_label",
+      "label": "2-Pack label",
+      "default": "Most Popular"
+    },
+    {
+      "type": "number",
+      "id": "bundle_2_discount",
+      "label": "2-Pack discount %",
+      "default": 10
+    },
+    {
+      "type": "text",
+      "id": "bundle_3_label",
+      "label": "3-Pack label",
+      "default": "Best Value"
+    },
+    {
+      "type": "number",
+      "id": "bundle_3_discount",
+      "label": "3-Pack discount %",
+      "default": 20
+    },
+    {
+      "type": "text",
+      "id": "bundle_note",
+      "label": "Bundle note text",
+      "default": "Multi-pack discounts applied automatically at checkout."
     }
   ],
   "blocks": [

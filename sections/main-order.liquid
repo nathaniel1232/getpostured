@@ -1,0 +1,101 @@
+<section class="main-order section-padding" id="main-content">
+  <div class="container">
+
+    <div class="order-header">
+      <h1 class="section-heading" style="text-align:left;">Order {{ order.name }}</h1>
+      <a class="form-link" href="{{ routes.account_url }}">← Back to account</a>
+    </div>
+
+    <p class="order-date">Placed on {{ order.created_at | time_tag: format: 'date' }}</p>
+
+    <div class="order-layout">
+
+      <!-- Line items -->
+      <div class="order-items">
+        <h2 class="account-section-title">Items</h2>
+        {%- for line_item in order.line_items -%}
+          <div class="cart-item">
+            {%- if line_item.image -%}
+              <img
+                class="cart-item__image"
+                src="{{ line_item.image | image_url: width: 160 }}"
+                alt="{{ line_item.image.alt | escape }}"
+                width="80"
+                height="80"
+                loading="lazy"
+              >
+            {%- endif -%}
+            <div class="cart-item__details">
+              <p class="cart-item__title">{{ line_item.title }}</p>
+              {%- unless line_item.variant.title == 'Default Title' -%}
+                <p class="cart-item__variant">{{ line_item.variant.title }}</p>
+              {%- endunless -%}
+              <p class="cart-item__price">Qty {{ line_item.quantity }} × {{ line_item.price | money }}</p>
+              {%- if line_item.fulfillment -%}
+                <p class="order-fulfillment">
+                  Fulfilled
+                  {%- if line_item.fulfillment.tracking_number -%}
+                    — <a class="form-link" href="{{ line_item.fulfillment.tracking_url }}" target="_blank" rel="noopener">Track: {{ line_item.fulfillment.tracking_number }}</a>
+                  {%- endif -%}
+                </p>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+
+      <!-- Summary -->
+      <div class="cart-summary">
+        <div class="cart-summary__inner">
+          <h2 class="cart-summary__title">Summary</h2>
+          <div class="cart-summary__row">
+            <span>Subtotal</span>
+            <span>{{ order.subtotal_price | money }}</span>
+          </div>
+          {%- for discount in order.cart_level_discount_applications -%}
+            <div class="cart-summary__row cart-summary__discount-row">
+              <span>{{ discount.title }}</span>
+              <span>−{{ discount.total_allocated_amount | money }}</span>
+            </div>
+          {%- endfor -%}
+          {%- for shipping_method in order.shipping_methods -%}
+            <div class="cart-summary__row">
+              <span>{{ shipping_method.title }}</span>
+              <span>{{ shipping_method.price | money }}</span>
+            </div>
+          {%- endfor -%}
+          {%- for tax_line in order.tax_lines -%}
+            <div class="cart-summary__row">
+              <span>{{ tax_line.title }} ({{ tax_line.rate | times: 100 }}%)</span>
+              <span>{{ tax_line.price | money }}</span>
+            </div>
+          {%- endfor -%}
+          <div class="cart-summary__row cart-summary__row--total">
+            <span><strong>Total</strong></span>
+            <span><strong>{{ order.total_price | money }}</strong></span>
+          </div>
+          <p class="cart-summary__note">Payment status: {{ order.financial_status_label }}</p>
+          <p class="cart-summary__note">Fulfillment: {{ order.fulfillment_status_label }}</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Shipping address -->
+    {%- if order.shipping_address -%}
+      <div class="order-shipping-address">
+        <h2 class="account-section-title">Shipping Address</h2>
+        <address>{{ order.shipping_address | format_address }}</address>
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Order",
+  "settings": [],
+  "presets": [{ "name": "Order" }]
+}
+{% endschema %}

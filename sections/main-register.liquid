@@ -1,0 +1,86 @@
+<section class="main-register section-padding" id="main-content">
+  <div class="container">
+    <div class="customer-form-wrapper">
+
+      <h1 class="customer-form__title">Create Account</h1>
+
+      {%- form 'create_customer' -%}
+        {%- if form.errors -%}
+          <div class="form-errors" role="alert">
+            {%- for error in form.errors -%}
+              <p>{{ form.errors.messages[error] }}</p>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        <div class="form-group">
+          <label class="form-label" for="FirstName">First name</label>
+          <input
+            class="form-input"
+            type="text"
+            name="customer[first_name]"
+            id="FirstName"
+            autocomplete="given-name"
+            autocorrect="off"
+            autocapitalize="words"
+          >
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="LastName">Last name</label>
+          <input
+            class="form-input"
+            type="text"
+            name="customer[last_name]"
+            id="LastName"
+            autocomplete="family-name"
+            autocorrect="off"
+            autocapitalize="words"
+          >
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="RegisterEmail">Email</label>
+          <input
+            class="form-input"
+            type="email"
+            name="customer[email]"
+            id="RegisterEmail"
+            autocomplete="email"
+            autocorrect="off"
+            autocapitalize="off"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="RegisterPassword">Password</label>
+          <input
+            class="form-input"
+            type="password"
+            name="customer[password]"
+            id="RegisterPassword"
+            autocomplete="new-password"
+            required
+          >
+        </div>
+
+        <button type="submit" class="btn-primary btn-primary--full">Create Account</button>
+      {%- endform -%}
+
+      <p class="customer-form__switch">
+        Already have an account?
+        <a class="form-link" href="{{ routes.account_login_url }}">Sign in</a>
+      </p>
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Register",
+  "settings": [],
+  "presets": [{ "name": "Register" }]
+}
+{% endschema %}

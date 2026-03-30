@@ -1,0 +1,94 @@
+<section class="main-login section-padding" id="main-content">
+  <div class="container">
+    <div class="customer-form-wrapper">
+
+      {%- if shop.checkout.guest_login -%}
+        <h1 class="customer-form__title">Sign In</h1>
+      {%- else -%}
+        <h1 class="customer-form__title">Sign In</h1>
+      {%- endif -%}
+
+      {%- form 'customer_login' -%}
+        {%- if form.errors -%}
+          <div class="form-errors" role="alert">
+            {%- for error in form.errors -%}
+              <p>{{ form.errors.messages[error] }}</p>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        <div class="form-group">
+          <label class="form-label" for="CustomerEmail">Email</label>
+          <input
+            class="form-input"
+            type="email"
+            name="customer[email]"
+            id="CustomerEmail"
+            autocomplete="email"
+            autocorrect="off"
+            autocapitalize="off"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="CustomerPassword">Password</label>
+          <input
+            class="form-input"
+            type="password"
+            name="customer[password]"
+            id="CustomerPassword"
+            autocomplete="current-password"
+            required
+          >
+          <a class="form-link" href="{{ routes.root_url }}account/login#recover">Forgot your password?</a>
+        </div>
+
+        <button type="submit" class="btn-primary btn-primary--full">Sign In</button>
+      {%- endform -%}
+
+      <p class="customer-form__switch">
+        Don't have an account?
+        <a class="form-link" href="{{ routes.account_register_url }}">Create one</a>
+      </p>
+
+      {%- if form.password_needed -%}
+        <h2 class="customer-form__title customer-form__title--secondary">Recover Password</h2>
+        {%- form 'recover_customer_password' -%}
+          {%- if form.posted_successfully? -%}
+            <p class="form-success">We've sent you an email with a link to update your password.</p>
+          {%- endif -%}
+          {%- if form.errors -%}
+            <div class="form-errors" role="alert">
+              {%- for error in form.errors -%}
+                <p>{{ form.errors.messages[error] }}</p>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+          <div class="form-group">
+            <label class="form-label" for="RecoverEmail">Email</label>
+            <input
+              class="form-input"
+              type="email"
+              name="email"
+              id="RecoverEmail"
+              autocomplete="email"
+              autocorrect="off"
+              autocapitalize="off"
+            >
+          </div>
+          <button type="submit" class="btn-primary btn-primary--full">Send reset email</button>
+        {%- endform -%}
+      {%- endif -%}
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Login",
+  "settings": [],
+  "presets": [{ "name": "Login" }]
+}
+{% endschema %}

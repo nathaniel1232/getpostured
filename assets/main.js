@@ -161,22 +161,53 @@ document.addEventListener('DOMContentLoaded', function () {
      ========================================================================== */
 
   const mainImageEl = document.querySelector('.product-main-image img');
+  const galleryThumbs = Array.from(document.querySelectorAll('.product-thumbnail'));
+  let currentGalleryIndex = 0;
 
-  document.querySelectorAll('.product-thumbnail').forEach(function (thumb) {
-    thumb.addEventListener('click', function () {
-      if (!mainImageEl) return;
+  function goToGalleryImage(index) {
+    if (!galleryThumbs.length || !mainImageEl) return;
+    if (index < 0) index = galleryThumbs.length - 1;
+    if (index >= galleryThumbs.length) index = 0;
+    currentGalleryIndex = index;
 
-      // Swap main image src from data-full attribute
-      const fullSrc = this.getAttribute('data-full');
-      if (fullSrc) {
+    const target = galleryThumbs[index];
+    const fullSrc = target.getAttribute('data-full');
+    if (fullSrc) {
+      mainImageEl.style.opacity = '0';
+      setTimeout(function () {
         mainImageEl.setAttribute('src', fullSrc);
-      }
+        mainImageEl.style.opacity = '1';
+      }, 150);
+    }
+    galleryThumbs.forEach(function (t) { t.classList.remove('is-active'); });
+    target.classList.add('is-active');
+    target.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+  }
 
-      // Update active state
-      document.querySelectorAll('.product-thumbnail').forEach(t => t.classList.remove('is-active'));
-      this.classList.add('is-active');
-    });
+  galleryThumbs.forEach(function (thumb, idx) {
+    thumb.addEventListener('click', function () { goToGalleryImage(idx); });
   });
+
+  // Prev / Next arrow buttons
+  var galleryPrev = document.querySelector('.gallery-arrow--prev');
+  var galleryNext = document.querySelector('.gallery-arrow--next');
+  if (galleryPrev) galleryPrev.addEventListener('click', function () { goToGalleryImage(currentGalleryIndex - 1); });
+  if (galleryNext) galleryNext.addEventListener('click', function () { goToGalleryImage(currentGalleryIndex + 1); });
+
+  // Touch / swipe on the main image
+  var mainImageWrapper = document.querySelector('.product-main-image');
+  if (mainImageWrapper && galleryThumbs.length > 1) {
+    var touchStartX = 0;
+    mainImageWrapper.addEventListener('touchstart', function (e) {
+      touchStartX = e.changedTouches[0].clientX;
+    }, { passive: true });
+    mainImageWrapper.addEventListener('touchend', function (e) {
+      var diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 40) {
+        goToGalleryImage(diff > 0 ? currentGalleryIndex + 1 : currentGalleryIndex - 1);
+      }
+    }, { passive: true });
+  }
 
   /* ==========================================================================
      7. Product Variant Selectors
@@ -348,5 +379,21 @@ document.addEventListener('DOMContentLoaded', function () {
         console.error('Cart count update failed:', err);
       });
   }
+
+  /* ==========================================================================
+     11. Bundle Pack Selector
+     ========================================================================== */
+
+  var bundleOptions = document.querySelectorAll('.bundle-option');
+  var bundleQtyInput = document.querySelector('.qty-hidden');
+
+  bundleOptions.forEach(function (option) {
+    option.addEventListener('click', function () {
+      bundleOptions.forEach(function (o) { o.classList.remove('is-active'); });
+      this.classList.add('is-active');
+      var qty = parseInt(this.getAttribute('data-qty'), 10) || 1;
+      if (bundleQtyInput) bundleQtyInput.value = qty;
+    });
+  });
 
 });

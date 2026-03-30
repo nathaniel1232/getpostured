@@ -1,0 +1,95 @@
+<section class="main-search section-padding" id="main-content">
+  <div class="container">
+
+    <h1 class="section-heading">Search</h1>
+
+    <form action="/search" method="get" role="search" class="search-form">
+      <div class="search-form__input-wrapper">
+        <input
+          class="search-form__input"
+          type="search"
+          name="q"
+          value="{{ search.terms | escape }}"
+          placeholder="Search our store…"
+          aria-label="Search"
+          autocomplete="off"
+        >
+        <input type="hidden" name="type" value="product">
+        <button type="submit" class="btn-primary search-form__btn" aria-label="Submit search">
+          Search
+        </button>
+      </div>
+    </form>
+
+    {%- if search.performed -%}
+      {%- if search.results_count == 0 -%}
+        <p class="search-no-results">No results for <em>&ldquo;{{ search.terms | escape }}&rdquo;</em>. Try a different term.</p>
+      {%- else -%}
+        <p class="search-results-count">
+          {{ search.results_count }} result{% if search.results_count != 1 %}s{% endif %} for
+          <em>&ldquo;{{ search.terms | escape }}&rdquo;</em>
+        </p>
+        <div class="search-results product-grid">
+          {%- for result in search.results -%}
+            {%- if result.object_type == 'product' -%}
+              <div class="product-grid-item">
+                <a href="{{ result.url }}" class="product-card-link">
+                  {%- if result.featured_image -%}
+                    <div class="product-card__image-wrapper">
+                      <img
+                        class="product-card__image"
+                        src="{{ result.featured_image | image_url: width: 400 }}"
+                        alt="{{ result.featured_image.alt | escape }}"
+                        width="400"
+                        height="400"
+                        loading="lazy"
+                      >
+                    </div>
+                  {%- endif -%}
+                  <div class="product-card__info">
+                    <p class="product-card__title">{{ result.title }}</p>
+                    <p class="product-card__price">{{ result.price | money }}</p>
+                  </div>
+                </a>
+              </div>
+            {%- else -%}
+              <div class="search-result-item">
+                <a href="{{ result.url }}" class="search-result-item__link">
+                  <strong>{{ result.title }}</strong>
+                </a>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+        {%- if paginate.pages > 1 -%}
+          {%- paginate search.results by 12 -%}
+            <div class="pagination">
+              {%- if paginate.previous -%}
+                <a class="pagination__link" href="{{ paginate.previous.url }}">← Previous</a>
+              {%- endif -%}
+              <span class="pagination__current">Page {{ paginate.current_page }} of {{ paginate.pages }}</span>
+              {%- if paginate.next -%}
+                <a class="pagination__link" href="{{ paginate.next.url }}">Next →</a>
+              {%- endif -%}
+            </div>
+          {%- endpaginate -%}
+        {%- endif -%}
+
+      {%- endif -%}
+    {%- endif -%}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Search",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Search"
+    }
+  ]
+}
+{% endschema %}
