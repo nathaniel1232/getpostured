@@ -122,8 +122,10 @@
         "r1": {
           "type": "result",
           "settings": {
+            "before_image": "shopify://shop_images/image.webp",
+            "after_image": "shopify://shop_images/sv.webp",
             "name": "Marcus T.",
-            "quote": "My jawline looks completely different now. It was my posture the whole time."
+            "quote": "I fixed my posture hella fast with this strap"
           }
         },
         "r2": {
@@ -138,8 +140,10 @@
         "r3": {
           "type": "result",
           "settings": {
+            "before_image": "shopify://shop_images/posture.webp",
+            "after_image": "shopify://shop_images/5454.webp",
             "name": "Dylan M.",
-            "quote": "The course opened my eyes. The strap built the habit. Total game changer."
+            "quote": "My jawline looks completely different now. It was my posture the whole time."
           }
         }
       },
