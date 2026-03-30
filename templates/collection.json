@@ -9,10 +9,56 @@
  */
 {
   "sections": {
+    "product_main_73Fk4T": {
+      "type": "product-main",
+      "blocks": {
+        "feature_aEmcU4": {
+          "type": "feature",
+          "settings": {
+            "text": "Adjustable design — fits all body types"
+          }
+        },
+        "feature_xhmTBF": {
+          "type": "feature",
+          "settings": {
+            "text": "Breathable, lightweight material for all-day comfort"
+          }
+        },
+        "feature_mJkAeU": {
+          "type": "feature",
+          "settings": {
+            "text": "Discreet — wear under or over clothing"
+          }
+        },
+        "feature_Beir7x": {
+          "type": "feature",
+          "settings": {
+            "text": "Posture Mastery Course included with purchase (digital)"
+          }
+        }
+      },
+      "block_order": [
+        "feature_aEmcU4",
+        "feature_xhmTBF",
+        "feature_mJkAeU",
+        "feature_Beir7x"
+      ],
+      "name": "Product Main",
+      "settings": {
+        "product": "posture-back-brace-adjustable-back-support-strap-to-prevent-spinal-distortion-and-hunchback-for-men-women-corrector-de-postura",
+        "short_description": "Retrains your posture. Sharpens your jawline appearance. Builds a stronger frame. Posture Mastery Course included with purchase.",
+        "review_count": "120+ reviews",
+        "size_note": "Runs small — we recommend sizing up. This product is unisex.",
+        "show_compare_price": true
+      }
+    },
     "main-collection": {
       "type": "main-collection",
       "settings": {}
     }
   },
-  "order": ["main-collection"]
+  "order": [
+    "product_main_73Fk4T",
+    "main-collection"
+  ]
 }
