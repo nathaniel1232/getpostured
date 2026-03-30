@@ -62,8 +62,8 @@
       "type": "before-after-slider",
       "settings": {
         "heading": "See the Difference",
-        "before_image": "shopify://shop_images/Skjermbilde_2026-03-30_181236.png",
-        "after_image": "shopify://shop_images/Skjermbilde_2026-03-30_181243.png",
+        "before_image": "shopify://shop_images/hf_20260330_201422_fc306fe9-00b0-4309-b39d-08da4467c9fb.png",
+        "after_image": "shopify://shop_images/hf_20260330_201143_841a506d-d9d2-4d48-acd3-d2bd16e36f4b.png",
         "before_label": "Before",
         "after_label": "After",
         "hint_text": "Drag the slider to compare"
