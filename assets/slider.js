@@ -17,7 +17,15 @@ document.addEventListener('DOMContentLoaded', function () {
     const handle = slider.querySelector('.ba-handle');
     if (!container || !afterWrapper || !handle) return;
 
+    const afterImg = afterWrapper.querySelector('img');
     let isDragging = false;
+
+    /* Keep after image sized to container (not wrapper) */
+    function syncAfterImageWidth() {
+      if (afterImg) afterImg.style.width = container.offsetWidth + 'px';
+    }
+    syncAfterImageWidth();
+    window.addEventListener('resize', syncAfterImageWidth);
 
     function setPosition(x) {
       const rect = container.getBoundingClientRect();

@@ -352,12 +352,24 @@ p {
   right: 0;
   z-index: 1000;
   height: var(--header-height);
+  background: transparent;
+  transition: background 0.4s ease, backdrop-filter 0.4s ease;
+}
+
+.header__inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  max-width: var(--container-width);
+  margin: 0 auto;
   padding: 0 32px;
-  background: transparent;
-  transition: background 0.4s ease, backdrop-filter 0.4s ease;
+  height: 100%;
+}
+
+.header__actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
 .site-header.is-scrolled {
@@ -716,8 +728,7 @@ p {
 .ba-after {
   position: absolute;
   top: 0;
-  right: 0;
-  width: 900px;
+  left: 0;
   height: 100%;
   object-fit: cover;
 }
@@ -1768,7 +1779,7 @@ p {
     --section-padding: var(--section-padding-mobile);
   }
 
-  .site-header {
+  .header__inner {
     padding: 0 20px;
   }
 

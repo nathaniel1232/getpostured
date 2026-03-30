@@ -33,13 +33,7 @@
         "f4": {
           "type": "feature",
           "settings": {
-            "text": "Free Posture Mastery Course included (digital)"
-          }
-        },
-        "f5": {
-          "type": "feature",
-          "settings": {
-            "text": "30-day money-back guarantee"
+            "text": "Posture Mastery Course included with purchase (digital)"
           }
         }
       },
@@ -47,10 +41,12 @@
         "f1",
         "f2",
         "f3",
-        "f4",
-        "f5"
+        "f4"
       ],
       "settings": {
+        "short_description": "Retrains your posture. Sharpens your jawline appearance. Builds a stronger frame. Posture Mastery Course included with purchase.",
+        "review_count": "120+ reviews",
+        "size_note": "Runs small — we recommend sizing up. This product is unisex.",
         "show_compare_price": true
       }
     },
@@ -85,7 +81,7 @@
         "q3"
       ],
       "settings": {
-        "heading": "Questions? We’ve Got Answers."
+        "heading": "Questions? We've Got Answers."
       }
     },
     "final-cta": {
