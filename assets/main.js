@@ -224,8 +224,16 @@ document.addEventListener('DOMContentLoaded', function () {
     const variants = window.productVariants;
     if (!variants || !Array.isArray(variants)) return;
 
-    const activeColor = document.querySelector('.color-swatch.is-active');
-    const activeSize = document.querySelector('.size-option.is-active');
+    // Read from default selectors OR first bundle picker
+    var activeColor, activeSize;
+    var firstPicker = document.querySelector('.bundle-picker[data-picker-index="0"]');
+    if (firstPicker) {
+      activeColor = firstPicker.querySelector('.bundle-picker__swatch.is-active');
+      activeSize = firstPicker.querySelector('.bundle-picker__size.is-active');
+    } else {
+      activeColor = document.querySelector('.color-swatch.is-active');
+      activeSize = document.querySelector('.size-option.is-active');
+    }
 
     const selectedColor = activeColor ? activeColor.getAttribute('data-value') : null;
     const selectedSize = activeSize ? activeSize.getAttribute('data-value') : null;
@@ -470,9 +478,46 @@ document.addEventListener('DOMContentLoaded', function () {
 
       var activePack = this.querySelector('.bundle-option.is-active');
       var bundleQty = activePack ? parseInt(activePack.getAttribute('data-qty'), 10) || 1 : 1;
+      var hasBundleUI = this.querySelector('.bundle-group') !== null;
 
-      // If no bundles or qty=1, simple single add
-      if (bundleQty <= 1) {
+      // When bundle pickers are present, always read from them
+      var pickers = document.querySelectorAll('.bundle-picker');
+
+      if (hasBundleUI && pickers.length > 0) {
+        // All items come from the inline pickers
+        var items = [];
+        pickers.forEach(function (picker) {
+          var colorEl = picker.querySelector('.bundle-picker__swatch.is-active');
+          var sizeEl = picker.querySelector('.bundle-picker__size.is-active');
+          var color = colorEl ? colorEl.getAttribute('data-value') : null;
+          var size = sizeEl ? sizeEl.getAttribute('data-value') : null;
+          var vid = findVariantId(color, size);
+          if (vid) {
+            items.push({ id: vid, quantity: 1 });
+          }
+        });
+
+        if (items.length === 0) {
+          if (submitBtn) submitBtn.classList.remove('is-loading');
+          return;
+        }
+
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ items: items })
+        })
+        .then(function (r) { return r.json(); })
+        .then(function () {
+          if (submitBtn) submitBtn.classList.remove('is-loading');
+          openCartDrawer();
+        })
+        .catch(function (err) {
+          console.error('Add to cart failed', err);
+          if (submitBtn) submitBtn.classList.remove('is-loading');
+        });
+      } else {
+        // No bundles — simple single add from form
         var formData = new FormData(this);
         formData.delete('return_to');
         fetch('/cart/add.js', { method: 'POST', body: formData })
@@ -485,48 +530,7 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error('Add to cart failed', err);
             if (submitBtn) submitBtn.classList.remove('is-loading');
           });
-        return;
       }
-
-      // Multi-item bundle: build items array
-      var items = [];
-
-      // Item 1: main selected variant
-      var mainVariantId = this.querySelector('input[name="id"]');
-      if (mainVariantId) {
-        items.push({ id: parseInt(mainVariantId.value, 10), quantity: 1 });
-      }
-
-      // Items 2+: from bundle pickers
-      var pickers = document.querySelectorAll('.bundle-picker');
-      pickers.forEach(function (picker) {
-        var colorEl = picker.querySelector('.bundle-picker__swatch.is-active');
-        var sizeEl = picker.querySelector('.bundle-picker__size.is-active');
-        var color = colorEl ? colorEl.getAttribute('data-value') : null;
-        var size = sizeEl ? sizeEl.getAttribute('data-value') : null;
-        var vid = findVariantId(color, size);
-        if (vid) {
-          items.push({ id: vid, quantity: 1 });
-        } else if (mainVariantId) {
-          // fallback to main variant
-          items.push({ id: parseInt(mainVariantId.value, 10), quantity: 1 });
-        }
-      });
-
-      fetch('/cart/add.js', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items: items })
-      })
-      .then(function (r) { return r.json(); })
-      .then(function () {
-        if (submitBtn) submitBtn.classList.remove('is-loading');
-        openCartDrawer();
-      })
-      .catch(function (err) {
-        console.error('Add to cart failed', err);
-        if (submitBtn) submitBtn.classList.remove('is-loading');
-      });
     });
   }
 
@@ -556,8 +560,9 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function buildItemPicker(index, colors, sizes) {
+    var num = index + 1;
     var h = '<div class="bundle-picker" data-picker-index="' + index + '">';
-    h += '<p class="bundle-picker__label">Item ' + (index + 1) + '</p>';
+    h += '<p class="bundle-picker__label">Item ' + num + '</p>';
     if (colors && colors.length > 0) {
       h += '<div class="bundle-picker__row"><span class="bundle-picker__opt-label">Color</span><div class="bundle-picker__swatches">';
       colors.forEach(function (c, i) {
@@ -576,22 +581,28 @@ document.addEventListener('DOMContentLoaded', function () {
     return h;
   }
 
+  var defaultSelectors = document.getElementById('default-variant-selectors');
+
   function renderBundlePickers(qty) {
     if (!pickerContainer) return;
-    if (qty <= 1) {
-      pickerContainer.style.display = 'none';
-      pickerContainer.innerHTML = '';
-      return;
-    }
+
+    // Hide default selectors when bundles are shown
+    if (defaultSelectors) defaultSelectors.style.display = 'none';
+
     var colors = productOpts.colors || [];
     var sizes = productOpts.sizes || [];
-    if (!colors.length && !sizes.length) { pickerContainer.style.display = 'none'; return; }
+    if (!colors.length && !sizes.length) {
+      pickerContainer.style.display = 'none';
+      // Show default selectors as fallback
+      if (defaultSelectors) defaultSelectors.style.display = '';
+      return;
+    }
 
-    // Get currently selected main options as defaults
-    var html = '<p class="bundle-picker__heading">Customize each item:</p>';
-    // Item 1 uses the main selectors above
-    html += '<p class="bundle-picker__note">Item 1 uses your selection above.</p>';
-    for (var i = 1; i < qty; i++) {
+    var html = '';
+    if (qty > 1) {
+      html += '<p class="bundle-picker__heading">Customize each item:</p>';
+    }
+    for (var i = 0; i < qty; i++) {
       html += buildItemPicker(i, colors, sizes);
     }
     pickerContainer.innerHTML = html;
@@ -599,16 +610,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Bind swatch/size clicks within pickers
     pickerContainer.querySelectorAll('.bundle-picker').forEach(function (picker) {
+      var isFirst = picker.getAttribute('data-picker-index') === '0';
       picker.querySelectorAll('.bundle-picker__swatch').forEach(function (sw) {
         sw.addEventListener('click', function () {
           picker.querySelectorAll('.bundle-picker__swatch').forEach(function (s) { s.classList.remove('is-active'); });
           this.classList.add('is-active');
+          if (isFirst) updateVariantSelection();
         });
       });
       picker.querySelectorAll('.bundle-picker__size').forEach(function (sz) {
         sz.addEventListener('click', function () {
           picker.querySelectorAll('.bundle-picker__size').forEach(function (s) { s.classList.remove('is-active'); });
           this.classList.add('is-active');
+          if (isFirst) updateVariantSelection();
         });
       });
     });
@@ -623,5 +637,11 @@ document.addEventListener('DOMContentLoaded', function () {
       renderBundlePickers(qty);
     });
   });
+
+  // Render pickers for the initially active pack on page load
+  var initialActive = document.querySelector('.bundle-option.is-active');
+  if (initialActive) {
+    renderBundlePickers(parseInt(initialActive.getAttribute('data-qty'), 10) || 1);
+  }
 
 });

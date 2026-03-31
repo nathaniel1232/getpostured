@@ -60,7 +60,6 @@
         <!-- Product Form -->
         <form action="/cart/add" method="post" class="add-to-cart-form" id="add-to-cart-form">
 
-          <!-- Color Selector -->
           {% assign color_option = nil %}
           {% for option in product.options_with_values %}
             {% assign option_name_lower = option.name | downcase %}
@@ -68,23 +67,6 @@
               {% assign color_option = option %}
             {% endif %}
           {% endfor %}
-          {% if color_option %}
-            <div class="variant-group">
-              <label class="variant-label">{{ color_option.name }}</label>
-              <div class="color-swatches">
-                {% for value in color_option.values %}
-                  <button type="button" class="color-swatch {% if forloop.first %}is-active{% endif %}"
-                          data-option-name="{{ color_option.name }}"
-                          data-value="{{ value }}"
-                          style="background-color: {{ value | downcase | replace: ' ', '' }};"
-                          aria-label="{{ value }}">
-                  </button>
-                {% endfor %}
-              </div>
-            </div>
-          {% endif %}
-
-          <!-- Size Selector -->
           {% assign size_option = nil %}
           {% for option in product.options_with_values %}
             {% assign option_name_lower = option.name | downcase %}
@@ -92,31 +74,49 @@
               {% assign size_option = option %}
             {% endif %}
           {% endfor %}
-          {% if size_option %}
-            <div class="variant-group">
-              <label class="variant-label">{{ size_option.name }}</label>
-              <div class="size-options">
-                {% for value in size_option.values %}
-                  <button type="button" class="size-option {% if forloop.first %}is-active{% endif %}"
-                          data-option-name="{{ size_option.name }}"
-                          data-value="{{ value }}">{{ value }}</button>
-                {% endfor %}
+
+          <!-- Default variant selectors (hidden when bundles are active) -->
+          <div id="default-variant-selectors" {% if section.settings.show_bundles %}style="display:none"{% endif %}>
+            {% if color_option %}
+              <div class="variant-group">
+                <label class="variant-label">{{ color_option.name }}</label>
+                <div class="color-swatches">
+                  {% for value in color_option.values %}
+                    <button type="button" class="color-swatch {% if forloop.first %}is-active{% endif %}"
+                            data-option-name="{{ color_option.name }}"
+                            data-value="{{ value }}"
+                            style="background-color: {{ value | downcase | replace: ' ', '' }};"
+                            aria-label="{{ value }}">
+                    </button>
+                  {% endfor %}
+                </div>
               </div>
-              <p class="size-note">{{ section.settings.size_note }}</p>
-            </div>
-          {% elsif product == blank %}
-            <!-- Fallback size buttons when no product selected -->
-            <div class="variant-group">
-              <label class="variant-label">Size</label>
-              <div class="size-options">
-                <button type="button" class="size-option is-active" data-option-name="Size" data-value="S">S</button>
-                <button type="button" class="size-option" data-option-name="Size" data-value="M">M</button>
-                <button type="button" class="size-option" data-option-name="Size" data-value="L">L</button>
-                <button type="button" class="size-option" data-option-name="Size" data-value="XL">XL</button>
+            {% endif %}
+            {% if size_option %}
+              <div class="variant-group">
+                <label class="variant-label">{{ size_option.name }}</label>
+                <div class="size-options">
+                  {% for value in size_option.values %}
+                    <button type="button" class="size-option {% if forloop.first %}is-active{% endif %}"
+                            data-option-name="{{ size_option.name }}"
+                            data-value="{{ value }}">{{ value }}</button>
+                  {% endfor %}
+                </div>
+                <p class="size-note">{{ section.settings.size_note }}</p>
               </div>
-              <p class="size-note">{{ section.settings.size_note }}</p>
-            </div>
-          {% endif %}
+            {% elsif product == blank %}
+              <div class="variant-group">
+                <label class="variant-label">Size</label>
+                <div class="size-options">
+                  <button type="button" class="size-option is-active" data-option-name="Size" data-value="S">S</button>
+                  <button type="button" class="size-option" data-option-name="Size" data-value="M">M</button>
+                  <button type="button" class="size-option" data-option-name="Size" data-value="L">L</button>
+                  <button type="button" class="size-option" data-option-name="Size" data-value="XL">XL</button>
+                </div>
+                <p class="size-note">{{ section.settings.size_note }}</p>
+              </div>
+            {% endif %}
+          </div>
 
           <!-- Bundle Packs / Quantity -->
           {% if section.settings.show_bundles %}
