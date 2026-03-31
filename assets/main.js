@@ -408,25 +408,43 @@ document.addEventListener('DOMContentLoaded', function () {
         var valEl = this.closest('.cart-drawer__qty').querySelector('.cart-drawer__qty-val');
         var current = parseInt(valEl.textContent, 10) || 1;
         var next = this.getAttribute('data-action') === 'increase' ? current + 1 : Math.max(0, current - 1);
+        // Optimistic update
+        valEl.textContent = next;
+        var itemRow = this.closest('.cart-drawer__item');
+        if (next <= 0 && itemRow) itemRow.style.opacity = '0.4';
         changeDrawerLine(line, next);
       });
     });
     drawerBody.querySelectorAll('.cart-drawer__remove').forEach(function (btn) {
       btn.addEventListener('click', function () {
+        var itemRow = this.closest('.cart-drawer__item');
+        if (itemRow) itemRow.style.opacity = '0.4';
         changeDrawerLine(parseInt(this.getAttribute('data-line'), 10), 0);
       });
     });
   }
 
+  var changeTimer = null;
+  var pendingChanges = {};
+
   function changeDrawerLine(line, qty) {
-    fetch('/cart/change.js', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ line: line, quantity: qty })
-    })
-    .then(function (r) { return r.json(); })
-    .then(function (cart) { renderCartDrawer(cart); })
-    .catch(function (err) { console.error('Cart change failed', err); });
+    // Debounce rapid clicks on same line
+    pendingChanges[line] = qty;
+    clearTimeout(changeTimer);
+    changeTimer = setTimeout(function () {
+      var entries = Object.entries(pendingChanges);
+      pendingChanges = {};
+      // Process the last change (most common: single line)
+      var lastEntry = entries[entries.length - 1];
+      fetch('/cart/change.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ line: parseInt(lastEntry[0], 10), quantity: lastEntry[1] })
+      })
+      .then(function (r) { return r.json(); })
+      .then(function (cart) { renderCartDrawer(cart); })
+      .catch(function (err) { console.error('Cart change failed', err); });
+    }, 300);
   }
 
   /* ── Cart icon → open drawer instead of navigating ── */
@@ -447,23 +465,58 @@ document.addEventListener('DOMContentLoaded', function () {
     addToCartForm.addEventListener('submit', function (e) {
       e.preventDefault();
 
-      // Sync bundle qty
-      var activePack = this.querySelector('.bundle-option.is-active');
-      var qtyField = this.querySelector('input[name="quantity"]');
-      if (activePack && qtyField) {
-        qtyField.value = parseInt(activePack.getAttribute('data-qty'), 10) || 1;
-      }
-
       var submitBtn = this.querySelector('[type="submit"]');
       if (submitBtn) submitBtn.classList.add('is-loading');
 
-      var formData = new FormData(this);
-      // Remove return_to — we're handling it client-side
-      formData.delete('return_to');
+      var activePack = this.querySelector('.bundle-option.is-active');
+      var bundleQty = activePack ? parseInt(activePack.getAttribute('data-qty'), 10) || 1 : 1;
+
+      // If no bundles or qty=1, simple single add
+      if (bundleQty <= 1) {
+        var formData = new FormData(this);
+        formData.delete('return_to');
+        fetch('/cart/add.js', { method: 'POST', body: formData })
+          .then(function (r) { return r.json(); })
+          .then(function () {
+            if (submitBtn) submitBtn.classList.remove('is-loading');
+            openCartDrawer();
+          })
+          .catch(function (err) {
+            console.error('Add to cart failed', err);
+            if (submitBtn) submitBtn.classList.remove('is-loading');
+          });
+        return;
+      }
+
+      // Multi-item bundle: build items array
+      var items = [];
+
+      // Item 1: main selected variant
+      var mainVariantId = this.querySelector('input[name="id"]');
+      if (mainVariantId) {
+        items.push({ id: parseInt(mainVariantId.value, 10), quantity: 1 });
+      }
+
+      // Items 2+: from bundle pickers
+      var pickers = document.querySelectorAll('.bundle-picker');
+      pickers.forEach(function (picker) {
+        var colorEl = picker.querySelector('.bundle-picker__swatch.is-active');
+        var sizeEl = picker.querySelector('.bundle-picker__size.is-active');
+        var color = colorEl ? colorEl.getAttribute('data-value') : null;
+        var size = sizeEl ? sizeEl.getAttribute('data-value') : null;
+        var vid = findVariantId(color, size);
+        if (vid) {
+          items.push({ id: vid, quantity: 1 });
+        } else if (mainVariantId) {
+          // fallback to main variant
+          items.push({ id: parseInt(mainVariantId.value, 10), quantity: 1 });
+        }
+      });
 
       fetch('/cart/add.js', {
         method: 'POST',
-        body: formData
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: items })
       })
       .then(function (r) { return r.json(); })
       .then(function () {
@@ -482,11 +535,84 @@ document.addEventListener('DOMContentLoaded', function () {
      ========================================================================== */
 
   /* ==========================================================================
-     11. Bundle Pack Selector
+     11. Bundle Pack Selector + Per-Item Pickers
      ========================================================================== */
 
   var bundleOptions = document.querySelectorAll('.bundle-option');
   var bundleQtyInput = document.querySelector('.qty-hidden');
+  var pickerContainer = document.getElementById('bundle-item-pickers');
+  var productOpts = window.productOptions || {};
+
+  function findVariantId(color, size) {
+    var variants = window.productVariants;
+    if (!variants) return null;
+    var match = variants.find(function (v) {
+      var opts = v.options || [];
+      var cMatch = !color || opts[0] === color;
+      var sMatch = !size || opts[1] === size;
+      return cMatch && sMatch;
+    });
+    return match ? match.id : null;
+  }
+
+  function buildItemPicker(index, colors, sizes) {
+    var h = '<div class="bundle-picker" data-picker-index="' + index + '">';
+    h += '<p class="bundle-picker__label">Item ' + (index + 1) + '</p>';
+    if (colors && colors.length > 0) {
+      h += '<div class="bundle-picker__row"><span class="bundle-picker__opt-label">Color</span><div class="bundle-picker__swatches">';
+      colors.forEach(function (c, i) {
+        h += '<button type="button" class="color-swatch bundle-picker__swatch' + (i === 0 ? ' is-active' : '') + '" data-value="' + c + '" style="background-color:' + c.toLowerCase().replace(/\s/g, '') + ';" aria-label="' + c + '"></button>';
+      });
+      h += '</div></div>';
+    }
+    if (sizes && sizes.length > 0) {
+      h += '<div class="bundle-picker__row"><span class="bundle-picker__opt-label">Size</span><div class="bundle-picker__sizes">';
+      sizes.forEach(function (s, i) {
+        h += '<button type="button" class="size-option bundle-picker__size' + (i === 0 ? ' is-active' : '') + '" data-value="' + s + '">' + s + '</button>';
+      });
+      h += '</div></div>';
+    }
+    h += '</div>';
+    return h;
+  }
+
+  function renderBundlePickers(qty) {
+    if (!pickerContainer) return;
+    if (qty <= 1) {
+      pickerContainer.style.display = 'none';
+      pickerContainer.innerHTML = '';
+      return;
+    }
+    var colors = productOpts.colors || [];
+    var sizes = productOpts.sizes || [];
+    if (!colors.length && !sizes.length) { pickerContainer.style.display = 'none'; return; }
+
+    // Get currently selected main options as defaults
+    var html = '<p class="bundle-picker__heading">Customize each item:</p>';
+    // Item 1 uses the main selectors above
+    html += '<p class="bundle-picker__note">Item 1 uses your selection above.</p>';
+    for (var i = 1; i < qty; i++) {
+      html += buildItemPicker(i, colors, sizes);
+    }
+    pickerContainer.innerHTML = html;
+    pickerContainer.style.display = '';
+
+    // Bind swatch/size clicks within pickers
+    pickerContainer.querySelectorAll('.bundle-picker').forEach(function (picker) {
+      picker.querySelectorAll('.bundle-picker__swatch').forEach(function (sw) {
+        sw.addEventListener('click', function () {
+          picker.querySelectorAll('.bundle-picker__swatch').forEach(function (s) { s.classList.remove('is-active'); });
+          this.classList.add('is-active');
+        });
+      });
+      picker.querySelectorAll('.bundle-picker__size').forEach(function (sz) {
+        sz.addEventListener('click', function () {
+          picker.querySelectorAll('.bundle-picker__size').forEach(function (s) { s.classList.remove('is-active'); });
+          this.classList.add('is-active');
+        });
+      });
+    });
+  }
 
   bundleOptions.forEach(function (option) {
     option.addEventListener('click', function () {
@@ -494,6 +620,7 @@ document.addEventListener('DOMContentLoaded', function () {
       this.classList.add('is-active');
       var qty = parseInt(this.getAttribute('data-qty'), 10) || 1;
       if (bundleQtyInput) bundleQtyInput.value = qty;
+      renderBundlePickers(qty);
     });
   });
 

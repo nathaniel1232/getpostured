@@ -145,7 +145,8 @@
                 </button>
 
                 <button type="button" class="bundle-option" data-qty="2">
-                  {% if disc2 > 0 %}<span class="bundle-badge">Save {{ disc2 }}%</span>{% endif %}
+                  <span class="bundle-badge bundle-badge--popular">Most Popular</span>
+                  {% if disc2 > 0 %}<span class="bundle-badge bundle-badge--save">Save {{ disc2 }}%</span>{% endif %}
                   <div class="bundle-option__left">
                     <span class="bundle-option__count">2×</span>
                     <span class="bundle-option__name">{{ section.settings.bundle_2_label }}</span>
@@ -169,6 +170,10 @@
                 </button>
 
               </div>
+
+              <!-- Per-item pickers for multi-packs -->
+              <div id="bundle-item-pickers" class="bundle-item-pickers" style="display:none"></div>
+
               {% if section.settings.bundle_note != blank %}
                 <p class="bundle-note">{{ section.settings.bundle_note }}</p>
               {% endif %}
@@ -241,6 +246,10 @@
             }{% unless forloop.last %},{% endunless %}
           {% endfor %}
         ];
+        window.productOptions = {
+          colors: {{ color_option.values | default: '' | json }},
+          sizes: {{ size_option.values | default: '' | json }}
+        };
       </script>
     {% endif %}
   </div>
