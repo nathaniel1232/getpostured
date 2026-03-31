@@ -112,9 +112,9 @@
         "show_bundles": true,
         "bundle_1_label": "1 Strap – $24.99",
         "bundle_2_label": "2 Straps – Save $10 (Pay $39.98)",
-        "bundle_2_discount": 10,
+        "bundle_2_discount": 20,
         "bundle_3_label": "3 Straps – Save $20 (Pay $54.97)",
-        "bundle_3_discount": 20,
+        "bundle_3_discount": 26.7,
         "bundle_note": "Multi-pack discounts applied automatically at checkout."
       }
     },
