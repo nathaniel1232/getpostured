@@ -227,13 +227,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const activeColor = document.querySelector('.color-swatch.is-active');
     const activeSize = document.querySelector('.size-option.is-active');
 
-    const selectedColor = activeColor ? activeColor.getAttribute('data-color') : null;
-    const selectedSize = activeSize ? activeSize.getAttribute('data-size') : null;
+    const selectedColor = activeColor ? activeColor.getAttribute('data-value') : null;
+    const selectedSize = activeSize ? activeSize.getAttribute('data-value') : null;
 
-    // Find the matching variant
+    // Find the matching variant (options array: [option1, option2, ...])
     const match = variants.find(function (v) {
-      const colorMatch = !selectedColor || v.option1 === selectedColor || v.color === selectedColor;
-      const sizeMatch = !selectedSize || v.option2 === selectedSize || v.size === selectedSize;
+      var opts = v.options || [];
+      var colorMatch = !selectedColor || opts[0] === selectedColor;
+      var sizeMatch  = !selectedSize  || opts[1] === selectedSize;
       return colorMatch && sizeMatch;
     });
 
@@ -244,17 +245,25 @@ document.addEventListener('DOMContentLoaded', function () {
       variantIdInput.value = match.id;
     }
 
-    // Update displayed price if variant has different price
-    const priceEl = document.querySelector('.product-price');
-    if (priceEl && match.price != null) {
-      // Shopify prices are in cents
-      const formatted = (match.price / 100).toFixed(2);
-      priceEl.textContent = '$' + formatted;
+    // Update displayed price — keep compare-at price visible
+    var currentPriceEl = document.getElementById('product-current-price');
+    var comparePriceEl = document.getElementById('product-compare-price');
+    if (currentPriceEl && match.price != null) {
+      currentPriceEl.textContent = '$' + (match.price / 100).toFixed(2);
+    }
+    if (comparePriceEl) {
+      if (match.compare_at_price && match.compare_at_price > match.price) {
+        comparePriceEl.textContent = '$' + (match.compare_at_price / 100).toFixed(2);
+        comparePriceEl.style.display = '';
+      } else {
+        comparePriceEl.style.display = 'none';
+      }
     }
 
     // Update main image if variant has an associated image
-    if (mainImageEl && match.featured_image && match.featured_image.src) {
-      mainImageEl.setAttribute('src', match.featured_image.src);
+    if (mainImageEl && match.featured_image) {
+      var imgSrc = typeof match.featured_image === 'string' ? match.featured_image : match.featured_image.src;
+      if (imgSrc) mainImageEl.setAttribute('src', imgSrc);
     }
   }
 
@@ -306,61 +315,171 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   /* ==========================================================================
-     9. Add to Cart (AJAX)
+     9. Cart Drawer
      ========================================================================== */
 
+  var drawerOverlay = document.getElementById('cart-drawer-overlay');
+  var drawer        = document.getElementById('cart-drawer');
+  var drawerBody    = document.getElementById('cart-drawer-body');
+  var drawerFooter  = document.getElementById('cart-drawer-footer');
+  var drawerCount   = document.getElementById('cart-drawer-count');
+  var drawerSubtotal = document.getElementById('cart-drawer-subtotal');
+
+  function moneyFmt(cents) {
+    return '$' + (cents / 100).toFixed(2);
+  }
+
+  function openCartDrawer() {
+    if (!drawer || !drawerOverlay) return;
+    drawer.classList.add('is-open');
+    drawerOverlay.classList.add('is-open');
+    document.body.classList.add('no-scroll');
+    loadCartDrawer();
+  }
+
+  function closeCartDrawer() {
+    if (!drawer || !drawerOverlay) return;
+    drawer.classList.remove('is-open');
+    drawerOverlay.classList.remove('is-open');
+    document.body.classList.remove('no-scroll');
+  }
+
+  if (drawerOverlay) drawerOverlay.addEventListener('click', closeCartDrawer);
+  var drawerCloseBtn = document.getElementById('cart-drawer-close');
+  if (drawerCloseBtn) drawerCloseBtn.addEventListener('click', closeCartDrawer);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && drawer && drawer.classList.contains('is-open')) closeCartDrawer();
+  });
+
+  function loadCartDrawer() {
+    fetch('/cart.js')
+      .then(function (r) { return r.json(); })
+      .then(function (cart) { renderCartDrawer(cart); })
+      .catch(function (err) { console.error('Failed to load cart', err); });
+  }
+
+  function renderCartDrawer(cart) {
+    if (!drawerBody) return;
+
+    // Update header count + badge
+    if (drawerCount) drawerCount.textContent = cart.item_count;
+    var countEls = document.querySelectorAll('.cart-count');
+    countEls.forEach(function (el) {
+      el.textContent = cart.item_count;
+      el.classList.toggle('has-items', cart.item_count > 0);
+    });
+
+    if (cart.item_count === 0) {
+      drawerBody.innerHTML = '<p class="cart-drawer__empty">Your cart is empty.</p>';
+      if (drawerFooter) drawerFooter.style.display = 'none';
+      return;
+    }
+
+    if (drawerFooter) drawerFooter.style.display = '';
+    if (drawerSubtotal) drawerSubtotal.textContent = moneyFmt(cart.total_price);
+
+    var html = '';
+    cart.items.forEach(function (item, idx) {
+      var line = idx + 1;
+      var imgSrc = item.image ? item.image.replace(/(\.[a-z]+)(\?|$)/, '_160x160$1$2') : '';
+      html += '<div class="cart-drawer__item" data-line="' + line + '">';
+      if (imgSrc) html += '<img class="cart-drawer__item-image" src="' + imgSrc + '" alt="" width="64" height="64" loading="lazy">';
+      html += '<div class="cart-drawer__item-info">';
+      html += '<p class="cart-drawer__item-title">' + item.product_title + '</p>';
+      if (item.variant_title && item.variant_title !== 'Default Title') html += '<p class="cart-drawer__item-variant">' + item.variant_title + '</p>';
+      html += '<p class="cart-drawer__item-price">' + moneyFmt(item.final_line_price) + '</p>';
+      html += '</div>';
+      html += '<div class="cart-drawer__item-actions">';
+      html += '<div class="cart-drawer__qty">';
+      html += '<button type="button" class="cart-drawer__qty-btn" data-line="' + line + '" data-action="decrease" aria-label="Decrease">−</button>';
+      html += '<span class="cart-drawer__qty-val">' + item.quantity + '</span>';
+      html += '<button type="button" class="cart-drawer__qty-btn" data-line="' + line + '" data-action="increase" aria-label="Increase">+</button>';
+      html += '</div>';
+      html += '<button type="button" class="cart-drawer__remove" data-line="' + line + '" aria-label="Remove">Remove</button>';
+      html += '</div>';
+      html += '</div>';
+    });
+    drawerBody.innerHTML = html;
+
+    // Bind qty / remove buttons
+    drawerBody.querySelectorAll('.cart-drawer__qty-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var line = parseInt(this.getAttribute('data-line'), 10);
+        var valEl = this.closest('.cart-drawer__qty').querySelector('.cart-drawer__qty-val');
+        var current = parseInt(valEl.textContent, 10) || 1;
+        var next = this.getAttribute('data-action') === 'increase' ? current + 1 : Math.max(0, current - 1);
+        changeDrawerLine(line, next);
+      });
+    });
+    drawerBody.querySelectorAll('.cart-drawer__remove').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        changeDrawerLine(parseInt(this.getAttribute('data-line'), 10), 0);
+      });
+    });
+  }
+
+  function changeDrawerLine(line, qty) {
+    fetch('/cart/change.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ line: line, quantity: qty })
+    })
+    .then(function (r) { return r.json(); })
+    .then(function (cart) { renderCartDrawer(cart); })
+    .catch(function (err) { console.error('Cart change failed', err); });
+  }
+
+  /* ── Cart icon → open drawer instead of navigating ── */
+  document.querySelectorAll('.header__cart').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      e.preventDefault();
+      openCartDrawer();
+    });
+  });
+
   /* ==========================================================================
-     9. Add to Cart — submit form, redirect to /cart
+     9b. Add to Cart — AJAX → open drawer
      ========================================================================== */
 
   const addToCartForm = document.querySelector('.add-to-cart-form');
 
   if (addToCartForm) {
-    // Make sure the hidden return_to field exists so Shopify redirects to /cart
-    var returnInput = addToCartForm.querySelector('input[name="return_to"]');
-    if (!returnInput) {
-      returnInput = document.createElement('input');
-      returnInput.type = 'hidden';
-      returnInput.name = 'return_to';
-      addToCartForm.appendChild(returnInput);
-    }
-    returnInput.value = '/cart';
+    addToCartForm.addEventListener('submit', function (e) {
+      e.preventDefault();
 
-    // Sync quantity from bundle selector or qty stepper into the quantity field
-    addToCartForm.addEventListener('submit', function () {
+      // Sync bundle qty
       var activePack = this.querySelector('.bundle-option.is-active');
       var qtyField = this.querySelector('input[name="quantity"]');
       if (activePack && qtyField) {
         qtyField.value = parseInt(activePack.getAttribute('data-qty'), 10) || 1;
       }
+
       var submitBtn = this.querySelector('[type="submit"]');
       if (submitBtn) submitBtn.classList.add('is-loading');
-      // Let the form submit normally — Shopify will redirect to /cart
+
+      var formData = new FormData(this);
+      // Remove return_to — we're handling it client-side
+      formData.delete('return_to');
+
+      fetch('/cart/add.js', {
+        method: 'POST',
+        body: formData
+      })
+      .then(function (r) { return r.json(); })
+      .then(function () {
+        if (submitBtn) submitBtn.classList.remove('is-loading');
+        openCartDrawer();
+      })
+      .catch(function (err) {
+        console.error('Add to cart failed', err);
+        if (submitBtn) submitBtn.classList.remove('is-loading');
+      });
     });
   }
 
   /* ==========================================================================
-     10. Cart Count Update
+     10. (Cart count updated by renderCartDrawer above)
      ========================================================================== */
-
-  function updateCartCount() {
-    fetch('/cart.js')
-      .then(function (res) { return res.json(); })
-      .then(function (cart) {
-        var countEls = document.querySelectorAll('.cart-count');
-        countEls.forEach(function (el) {
-          el.textContent = cart.item_count;
-          if (cart.item_count > 0) {
-            el.classList.add('has-items');
-          } else {
-            el.classList.remove('has-items');
-          }
-        });
-      })
-      .catch(function (err) {
-        console.error('Cart count update failed:', err);
-      });
-  }
 
   /* ==========================================================================
      11. Bundle Pack Selector

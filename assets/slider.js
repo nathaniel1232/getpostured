@@ -24,8 +24,8 @@ document.addEventListener('DOMContentLoaded', function () {
       handle.style.left = (pct * 100).toFixed(4) + '%';
     }
 
-    /* initial 50/50 */
-    setPosition(container.getBoundingClientRect().left + container.offsetWidth * 0.5);
+    /* initial position: far left — shows full "before" image */
+    setPosition(container.getBoundingClientRect().left + container.offsetWidth * 0.05);
 
     /* ── Mouse ── */
     handle.addEventListener('mousedown', function (e) {

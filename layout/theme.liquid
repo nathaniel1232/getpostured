@@ -19,6 +19,28 @@
     {{ content_for_layout }}
   </main>
   {% section 'footer' %}
+
+  <!-- Cart Drawer -->
+  <div class="cart-drawer-overlay" id="cart-drawer-overlay"></div>
+  <aside class="cart-drawer" id="cart-drawer" aria-label="Shopping cart">
+    <div class="cart-drawer__header">
+      <h3 class="cart-drawer__title">Your Cart (<span id="cart-drawer-count">{{ cart.item_count }}</span>)</h3>
+      <button class="cart-drawer__close" id="cart-drawer-close" aria-label="Close cart">&times;</button>
+    </div>
+    <div class="cart-drawer__body" id="cart-drawer-body">
+      {% if cart.item_count == 0 %}
+        <p class="cart-drawer__empty">Your cart is empty.</p>
+      {% endif %}
+    </div>
+    <div class="cart-drawer__footer" id="cart-drawer-footer" {% if cart.item_count == 0 %}style="display:none"{% endif %}>
+      <div class="cart-drawer__subtotal-row">
+        <span>Subtotal</span>
+        <strong id="cart-drawer-subtotal">{{ cart.total_price | money }}</strong>
+      </div>
+      <a href="/checkout" class="btn-primary btn-primary--full cart-drawer__checkout">Checkout</a>
+    </div>
+  </aside>
+
   <script src="{{ 'main.js' | asset_url }}" defer></script>
   <script src="{{ 'slider.js' | asset_url }}" defer></script>
 </body>

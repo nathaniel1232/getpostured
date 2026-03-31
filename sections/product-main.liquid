@@ -37,7 +37,7 @@
       </div>
 
       <!-- RIGHT: Product Info -->
-      <div class="product-info animate-in">
+      <div class="product-info animate-in" id="product-buy">
         <h2 class="product-title">{% if product.title != blank %}{{ product.title }}{% else %}FrameFix Strap{% endif %}</h2>
 
         <!-- Star Rating -->
@@ -50,10 +50,8 @@
 
         <!-- Price -->
         <div class="product-price">
-          {% if product.compare_at_price > product.price %}
-            <span class="product-price__compare">{{ product.compare_at_price | money }}</span>
-          {% endif %}
-          <span>{% if product.price %}{{ product.price | money }}{% else %}$49.95{% endif %}</span>
+          <span class="product-price__compare" id="product-compare-price" {% unless product.compare_at_price > product.price %}style="display:none"{% endunless %}>{{ product.compare_at_price | money }}</span>
+          <span class="product-price__current" id="product-current-price">{% if product.price %}{{ product.price | money }}{% else %}$49.95{% endif %}</span>
         </div>
 
         <!-- Short description -->
@@ -61,7 +59,6 @@
 
         <!-- Product Form -->
         <form action="/cart/add" method="post" class="add-to-cart-form" id="add-to-cart-form">
-          <input type="hidden" name="return_to" value="/cart">
 
           <!-- Color Selector -->
           {% assign color_option = nil %}
