@@ -61,7 +61,7 @@
     "before-after": {
       "type": "before-after-slider",
       "settings": {
-        "heading": "See the Difference",
+        "heading": "The importance of posture",
         "before_image": "shopify://shop_images/hf_20260331_091825_91a50bdd-634b-40b6-ac35-4e4d44cc677e.png",
         "after_image": "shopify://shop_images/hf_20260331_091831_5694c642-5c19-4b31-821d-f17b9a6f916c.png",
         "before_label": "",
